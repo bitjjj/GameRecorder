@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.gamerecorder.widget.PinnedSectionListView
+        android:id="@+id/team_vs_history_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false" />
+
+    <TextView
+        android:id="@+id/team_vs_history_list_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/team_vs_empty_tip"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

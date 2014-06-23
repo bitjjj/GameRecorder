@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SettingsActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/team_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:contentDescription="@string/team_tip" />
+
+        <ImageButton
+            android:id="@+id/add_team"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_new" />
+
+        <ImageButton
+            android:id="@+id/delete_team"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_cancel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/teammember_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:ems="10"
+            android:hint="@string/teammember_tip" >
+
+            <requestFocus />
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/add_teammember"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_new"
+             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.fortysevendeg.swipelistview.SwipeListView
+            xmlns:swipe="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/teammembers_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            swipe:swipeBackView="@+id/back"
+            swipe:swipeCloseAllItemsWhenMoveList="true"
+            swipe:swipeFrontView="@+id/front"
+            swipe:swipeMode="left"
+            swipe:swipeOffsetLeft="230dp"
+            swipe:swipeOffsetRight="0dp" />
+
+        <TextView
+            android:id="@+id/teammembers_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/teammember_empty_tip"/>
+    </LinearLayout>
+
+</LinearLayout>

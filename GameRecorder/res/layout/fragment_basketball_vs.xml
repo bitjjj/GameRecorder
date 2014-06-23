@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal" >
+
+                <Spinner
+                    android:id="@+id/team_name_list_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:gravity="left" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:text="@string/vs_tip"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <Spinner
+                    android:id="@+id/team_name_list_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:gravity="right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/team_score_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:ems="10"
+                    android:gravity="center_horizontal|center"
+                    android:hint="@string/score_0"
+                    android:inputType="number"
+                    android:text="@string/score_0" >
+                </EditText>
+
+                <Button
+                    android:id="@+id/game_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/start_label" />
+
+                <EditText
+                    android:id="@+id/team_score_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:ems="10"
+                    android:gravity="center_horizontal|center"
+                    android:hint="@string/score_0"
+                    android:inputType="number"
+                    android:text="@string/score_0" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_left_name_1"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="left"
+                    android:tag="teammember_left_name_1"
+                    android:text="@string/teammember_name_default" />
+                
+				 <Spinner
+                    android:id="@+id/team_name_score_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_score_1"/>
+				 
+				 <Spinner
+                    android:id="@+id/team_name_game_type_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_game_type_1"/>
+				 
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_right_name_1"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:tag="teammember_right_name_1"
+                    android:text="@string/teammember_name_default" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_left_name_2"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:tag="teammember_left_name_2"
+                    android:text="@string/teammember_name_default" />
+
+				<Spinner
+                    android:id="@+id/team_name_score_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_score_2"/>
+				 
+				 <Spinner
+                    android:id="@+id/team_name_game_type_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_game_type_2"/>
+				 
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_right_name_2"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:tag="teammember_right_name_2"
+                    android:text="@string/teammember_name_default" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_left_name_3"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:tag="teammember_left_name_3"
+                    android:text="@string/teammember_name_default" />
+                
+				<Spinner
+                    android:id="@+id/team_name_score_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_score_3"/>
+				 
+				 <Spinner
+                    android:id="@+id/team_name_game_type_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_game_type_3"/>
+				 
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_right_name_3"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:tag="teammember_right_name_3"
+                    android:text="@string/teammember_name_default" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_left_name_4"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:tag="teammember_left_name_4"
+                    android:text="@string/teammember_name_default" />
+                
+				<Spinner
+                    android:id="@+id/team_name_score_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_score_4"/>
+				 
+				 <Spinner
+                    android:id="@+id/team_name_game_type_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_game_type_4"/>
+				 
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_right_name_4"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:tag="teammember_right_name_4"
+                    android:text="@string/teammember_name_default" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_left_name_5"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:tag="teammember_left_name_5"
+                    android:text="@string/teammember_name_default" />
+                
+				<Spinner
+                    android:id="@+id/team_name_score_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_score_5"/>
+				 
+				 <Spinner
+                    android:id="@+id/team_name_game_type_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight = "1"
+                    android:tag="team_name_game_type_5"/>
+				 
+                <com.gamerecorder.widget.TextViewInfo
+                    android:id="@+id/teammember_right_name_5"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:tag="teammember_right_name_5"
+                    android:text="@string/teammember_name_default" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <ListView
+        android:id="@+id/teammember_score_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/scrollview">
+    </ListView>
+
+</RelativeLayout>

@@ -1,0 +1,88 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <LinearLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffcccccc"
+        android:gravity="center|right" >
+        <Button
+            android:id="@+id/remove"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/delete_label" >
+        </Button>
+    </LinearLayout>
+    
+
+    <LinearLayout
+        android:id="@+id/front"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="#ffffffff" >
+        
+        <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:orientation="vertical">
+
+	        <TextView
+	            android:id="@+id/start_date"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="fill_horizontal|center"
+	            android:layout_marginLeft="4dp"
+	            android:textSize="12sp" >
+
+	        </TextView>
+
+	        <TextView
+	            android:id="@+id/start_time"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
+	            android:layout_marginLeft="4dp"
+	            android:gravity="center"
+	            android:textSize="12sp" >
+
+	        </TextView>
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
+	            android:layout_marginLeft="4dp"
+	            android:gravity="center"
+	            android:text="@string/time_range_tip"
+	            android:textSize="12sp" >
+
+	        </TextView>
+
+	        <TextView
+	            android:id="@+id/end_time"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
+	            android:layout_marginLeft="4dp"
+	            android:gravity="center"
+	            android:textSize="12sp" >
+
+	        </TextView>
+        </LinearLayout>
+        
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="right|center_vertical"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:textAppearance="?android:attr/textAppearanceLarge" >
+        </TextView>
+    </LinearLayout>
+
+</FrameLayout>
