@@ -1,6 +1,5 @@
 package com.gamerecorder.activity;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -24,13 +22,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fortysevendeg.swipelistview.SwipeListView;
-import com.gamerecorder.model.GameTeam;
-import com.gamerecorder.model.GameTeammember;
+import com.gamerecorder.db.dao.GameTeamDao;
+import com.gamerecorder.db.dao.GameTeammemberDao;
+import com.gamerecorder.db.model.GameTeam;
+import com.gamerecorder.db.model.GameTeammember;
 import com.gamerecorder.util.Constants;
-import com.gamerecorder.util.DatabaseHelper;
-import com.gamerecorder.util.FileUtil;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
 
 public class SettingsActivity extends LeftSwipeBaseActivity {
 
@@ -49,22 +45,23 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 	private SwipeListView teammemberSwipeListView;
 	private SimpleAdapter teammemberListAdapter;
 
-	//private Map<String, List<String>> teamData = new HashMap<String, List<String>>();
-	
+	private GameTeamDao gameTeamDao;
+	private GameTeammemberDao gameTeammemberDao;
 	private int currentTeamId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_settings);
 
 		setActionBar();
 
 		handleTeamViewSection(savedInstanceState);
-
 		handleTeammemberViewSection(savedInstanceState);
+		
+		gameTeamDao = new GameTeamDao(this);
+		gameTeammemberDao = new GameTeammemberDao(this);
 
 	}
 
@@ -157,16 +154,9 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 						teammemberListAdapter.notifyDataSetChanged();
 						teammemberSwipeListView.closeOpenedItems();
 
-						//teamData.get(teamListAdapter.getItem(teamListPosition)).remove(removeItem.get("text"));
-						
-						try {
-							Dao<GameTeammember, Integer> memberDao = DatabaseHelper.getInstance(SettingsActivity.this).getGameTeammemberDao();
-							GameTeammember member = memberDao.queryForId(Integer.valueOf(data.toString()));
-							member.setSpecialMark(Constants.DELETE_MARK);
-							memberDao.update(member);
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
+						GameTeammember member = gameTeammemberDao.queryById(Integer.valueOf(data.toString()));
+						member.setSpecialMark(Constants.DELETE_MARK);
+						gameTeammemberDao.update(member);
 					}
 				});
 				break;
@@ -186,32 +176,20 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 			
 			teammemberList.clear();
 			
-			/*List<String> items = teamData.get(teamListAdapter.getItem(teamListPosition));
-			for(String item:items){
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("text", item);
-				map.put("remove", Math.random());
-				teammemberList.add(map);
-			}*/
 			String teamName = teamListAdapter.getItem(teamListPosition);
-			DatabaseHelper helper = DatabaseHelper.getInstance(SettingsActivity.this);
-			try {
-				GameTeam team= helper.getGameTeamDao().queryBuilder().where().eq(GameTeam.COLUMN_NAME, teamName).query().get(0);
-				GameTeammember[] members = team.getMembers().toArray(new GameTeammember[0]);
-				
-				for(GameTeammember member:members){
-					if(member.getSpecialMark() != Constants.DELETE_MARK){
-						Map<String, Object> map = new HashMap<String, Object>();
-						map.put("text", member.getName());
-						map.put("remove", member.getId());
-						teammemberList.add(map);
-					}
+			GameTeam team= gameTeamDao.queryByName(teamName);
+			GameTeammember[] members = team.getMembers().toArray(new GameTeammember[0]);
+		
+			for(GameTeammember member:members){
+				if(member.getSpecialMark() != Constants.DELETE_MARK){
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("text", member.getName());
+					map.put("remove", member.getId());
+					teammemberList.add(map);
 				}
-				
-				currentTeamId = team.getId();
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
+				
+			currentTeamId = team.getId();
 			
 			teammemberListAdapter.notifyDataSetChanged();
 		}
@@ -234,20 +212,8 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 						teamListAdapter.add(value);
 						teamListAdapter.notifyDataSetChanged();
 
-						//teamData.put(value, new ArrayList<String>());
-						
-						//ormlite
 						GameTeam newTeam = new GameTeam(value);
-						
-						DatabaseHelper helper = DatabaseHelper.getInstance(SettingsActivity.this);
-						Dao<GameTeam, Integer> teamDao;
-						try {
-							teamDao = helper.getGameTeamDao();
-							teamDao.create(newTeam);
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-						
+						gameTeamDao.create(newTeam);
 						
 					}
 
@@ -273,15 +239,10 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 						String item = teamListAdapter.getItem(teamListPosition);
 						teamListAdapter.remove(item);
 						teamListAdapter.notifyDataSetChanged();
-
-						//teamData.remove(item);
 						
 						GameTeam team = new GameTeam(currentTeamId,item,Constants.DELETE_MARK);
-						try {
-							DatabaseHelper.getInstance(SettingsActivity.this).getGameTeamDao().update(team);
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
+						gameTeamDao.update(team);
+						
 					}
 				};
 				AlertDialog dlg = SettingsActivity.this.getAlertDlg(tv,
@@ -297,19 +258,12 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 		public void onClick(View v) {
 			String teammemberName = teammemberNameEdit.getText().toString();
 			if (!"".equals(teammemberName) && teamListPosition != -1) {
-				
 
-				//teamData.get(teamListAdapter.getItem(teamListPosition)).add(teammemberName);
-				
 				GameTeam team = new GameTeam();
 				team.setId(currentTeamId);
 				
 				GameTeammember member = new GameTeammember(teammemberName, team);
-				try {
-					DatabaseHelper.getInstance(SettingsActivity.this).getGameTeammemberDao().create(member);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				gameTeammemberDao.create(member);
 				
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("text", teammemberName);
@@ -321,27 +275,6 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 			}
 		}
 	};
-
-	/*@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// Create an intent for the parent Activity
-			Intent upIntent = NavUtils.getParentActivityIntent(this);
-			// Check if we need to create the entire stack
-			if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-				// This stack doesn't exist yet, so it must be synthesized
-				TaskStackBuilder.create(this).addParentStack(this)
-						.startActivities();
-			} else {
-				// Stack exists, so just navigate up
-				NavUtils.navigateUpFromSameTask(this);
-			}
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}*/
 
 	private AlertDialog getAlertDlg(final View view,
 			DialogInterface.OnClickListener positiveListener,
@@ -374,37 +307,23 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// openFileInput("");
-		Log.d(TAG, "onResume");
-
 		loadTeamList();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.d(TAG, "onPause");
-
-		//FileUtil.writeSettingsFile(this, teamData);
 	}
 	
 	private void loadTeamList(){
-		//teamData = (Map)FileUtil.getSettingsFile(this);
-		//restore team list
+
 		teamListAdapter.clear();
-		/*for(String name:teamData.keySet()){
-			teamListAdapter.add(name);
-		}*/
-		DatabaseHelper helper = DatabaseHelper.getInstance(SettingsActivity.this);
-		try {
-			PreparedQuery<GameTeam> query = helper.getGameTeamDao().queryBuilder().where().ne(GameTeam.COLUMN_MARK,Constants.DELETE_MARK).prepare();
-			List<GameTeam> teams = helper.getGameTeamDao().query(query);
-			for(GameTeam team:teams){
-				teamListAdapter.add(team.getName());
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+		List<GameTeam> teams = gameTeamDao.queryByMark(Constants.DELETE_MARK);
+		for(GameTeam team:teams){
+			teamListAdapter.add(team.getName());
 		}
+		
 		teamListAdapter.notifyDataSetChanged();
 	}
 	

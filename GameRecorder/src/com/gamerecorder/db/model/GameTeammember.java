@@ -1,15 +1,12 @@
-package com.gamerecorder.model;
+package com.gamerecorder.db.model;
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = GameTeammember.TABLE_NAME)
+public class GameTeammember {
 
-@DatabaseTable(tableName = GameTeam.TABLE_NAME)
-public class GameTeam {
-
-	public static final String TABLE_NAME = "game_team";
+	public static final String TABLE_NAME = "game_teammember";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_MARK = "special_mark";
 	public static final String COLUMN_NAME = "name";
@@ -24,9 +21,9 @@ public class GameTeam {
 	@DatabaseField(columnName = COLUMN_MARK,defaultValue = "0")
 	public int specialMark;
 	
-	@ForeignCollectionField(eager = false)
-	private ForeignCollection<GameTeammember> members;
-
+	@DatabaseField(foreign = true, canBeNull = false)
+	public GameTeam team;
+	
 	public int getId() {
 		return id;
 	}
@@ -58,24 +55,21 @@ public class GameTeam {
 	public void setSpecialMark(int specialMark) {
 		this.specialMark = specialMark;
 	}
-	
-	public ForeignCollection<GameTeammember> getMembers() {
-		return members;
+
+	public GameTeam getTeam() {
+		return team;
 	}
 
-	public GameTeam(String name){
-		super();
-		
-		this.name = name;
+	public void setTeam(GameTeam team) {
+		this.team = team;
 	}
 	
-	public GameTeam(int id,String name,int mark){
-		super();
-		this.id = id;
+	public GameTeammember(String name,GameTeam team){
+		this();
 		this.name = name;
-		this.specialMark = mark;
+		this.team = team;
 	}
-	
-	public GameTeam(){}
+
+	public GameTeammember(){}
 	
 }

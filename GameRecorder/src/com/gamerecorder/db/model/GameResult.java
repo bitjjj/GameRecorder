@@ -1,4 +1,4 @@
-package com.gamerecorder.model;
+package com.gamerecorder.db.model;
 
 import java.util.Date;
 
@@ -16,6 +16,8 @@ public class GameResult {
 	public static final String COLUMN_KIND = "game_kind";
 	public static final String COLUMN_START = "start_date";
 	public static final String COLUMN_END = "end_date";
+	public static final String COLUMN_SCORE1 = "scoreLeft";
+	public static final String COLUMN_SCORE2 = "scoreRight";
 	
 	@DatabaseField(generatedId = true)
 	private int id;
@@ -24,10 +26,10 @@ public class GameResult {
 	private String gameKind;
 	
 	@DatabaseField(foreign = true, canBeNull = false)
-	private GameTeam team1;
+	private GameTeam teamLeft;
 
 	@DatabaseField(foreign = true, canBeNull = false)
-	private GameTeam team2;
+	private GameTeam teamRight;
 	
 	@DatabaseField(columnName = COLUMN_START)
 	private Date startDate;
@@ -37,6 +39,9 @@ public class GameResult {
 	
 	@DatabaseField(columnName = COLUMN_MARK)
 	private int specialMark;
+	
+	@DatabaseField(defaultValue = "0")
+	private int scoreLeft,scoreRight;	
 	
 	@ForeignCollectionField(eager = false)
 	private ForeignCollection<GameResultDetail> details;
@@ -57,20 +62,20 @@ public class GameResult {
 		this.gameKind = gameKind;
 	}
 
-	public GameTeam getTeam1() {
-		return team1;
+	public GameTeam getTeamLeft() {
+		return teamLeft;
 	}
 
-	public void setTeam1(GameTeam team1) {
-		this.team1 = team1;
+	public void setTeamLeft(GameTeam teamLeft) {
+		this.teamLeft = teamLeft;
 	}
 
-	public GameTeam getTeam2() {
-		return team2;
+	public GameTeam getTeamRight() {
+		return teamRight;
 	}
 
-	public void setTeam2(GameTeam team2) {
-		this.team2 = team2;
+	public void setTeamRight(GameTeam teamRight) {
+		this.teamRight = teamRight;
 	}
 
 	public Date getStartDate() {
@@ -93,12 +98,36 @@ public class GameResult {
 		return specialMark;
 	}
 
+	public int getScoreLeft() {
+		return scoreLeft;
+	}
+
+	public void setScoreLeft(int scoreLeft) {
+		this.scoreLeft = scoreLeft;
+	}
+
+	public int getScoreRight() {
+		return scoreRight;
+	}
+
+	public void setScoreRight(int scoreRight) {
+		this.scoreRight = scoreRight;
+	}
+
+	
 	public void setSpecialMark(int specialMark) {
 		this.specialMark = specialMark;
 	}
 
 	public ForeignCollection<GameResultDetail> getDetails() {
 		return details;
+	}
+	
+	public GameResult(GameTeam teamLeft,GameTeam teamRight){
+		this();
+		this.teamLeft = teamLeft;
+		this.teamRight = teamRight;
+		this.startDate = new Date();
 	}
 	
 	public GameResult(){}

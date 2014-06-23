@@ -11,11 +11,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.gamerecorder.model.GameList;
-import com.gamerecorder.model.GameResult;
-import com.gamerecorder.model.GameResultDetail;
-import com.gamerecorder.model.GameTeam;
-import com.gamerecorder.model.GameTeammember;
+import com.gamerecorder.db.model.GameList;
+import com.gamerecorder.db.model.GameResult;
+import com.gamerecorder.db.model.GameResultDetail;
+import com.gamerecorder.db.model.GameTeam;
+import com.gamerecorder.db.model.GameTeammember;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;

@@ -29,7 +29,6 @@ import com.gamerecorder.activity.MainActivity;
 import com.gamerecorder.activity.R;
 import com.gamerecorder.events.TeamListChangeEvent;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
-import com.gamerecorder.interfaces.onTeamListLoaded;
 import com.gamerecorder.model.Game;
 import com.gamerecorder.util.FileUtil;
 import com.gamerecorder.util.ViewUtils;
@@ -125,8 +124,6 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		return v;
 	}
 	
-	
-
 	private View.OnClickListener gameStartClickListener = new View.OnClickListener(){
 		@Override
 		public void onClick(View view) {
