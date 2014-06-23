@@ -386,7 +386,6 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 		Log.d(TAG, "onPause");
 
 		//FileUtil.writeSettingsFile(this, teamData);
-
 	}
 	
 	private void loadTeamList(){
