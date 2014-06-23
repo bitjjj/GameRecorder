@@ -17,6 +17,8 @@ SwipeListView，ListView Item向左滑动，显示出滑动菜单
 
 NineOldAndroids，一些动画效果
 
+PinnedSectionListView，可以固定ListView的分类title
+
 ORMLite，数据库操作
 
 EventBus，Activity与深层次的Fragment通信
