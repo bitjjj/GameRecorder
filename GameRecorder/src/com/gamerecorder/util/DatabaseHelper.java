@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.gamerecorder.db.model.GameList;
 import com.gamerecorder.db.model.GameResult;
-import com.gamerecorder.db.model.GameResultDetail;
+import com.gamerecorder.db.model.GameResultStatistic;
 import com.gamerecorder.db.model.GameTeam;
 import com.gamerecorder.db.model.GameTeammember;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -66,7 +66,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(connectionSource, GameTeam.class);
 			TableUtils.createTable(connectionSource, GameTeammember.class);
 			TableUtils.createTable(connectionSource, GameResult.class);
-			TableUtils.createTable(connectionSource, GameResultDetail.class);
+			TableUtils.createTable(connectionSource, GameResultStatistic.class);
 		} catch (SQLException e) {
 			Log.e(TAG, "Unable to create tables.", e);
 			throw new RuntimeException(e);
@@ -84,7 +84,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.dropTable(connectionSource, GameTeam.class, false);
 			TableUtils.dropTable(connectionSource, GameTeammember.class, false);
 			TableUtils.dropTable(connectionSource, GameResult.class, false);
-			TableUtils.dropTable(connectionSource, GameResultDetail.class, false);
+			TableUtils.dropTable(connectionSource, GameResultStatistic.class, false);
 
 			onCreate(sqLiteDatabase, connectionSource);
 		} catch (SQLException e) {
@@ -128,8 +128,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return getDao(GameResult.class);
 	}
 
-	public Dao<GameResultDetail, Integer> getGameResultDetailDao() throws SQLException {
-		return getDao(GameResultDetail.class);
+	public Dao<GameResultStatistic, Integer> getGameResultStatisticDao() throws SQLException {
+		return getDao(GameResultStatistic.class);
 	}
 
 	public Dao<GameTeam, Integer> getGameTeamDao() throws SQLException {

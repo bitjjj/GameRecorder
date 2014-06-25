@@ -80,7 +80,7 @@ public class BasketballVSFragmentOld extends Fragment implements onTeamListLoade
 		gameStartButton = (Button)v.findViewById(R.id.game_start);
 		teamScoreListView = (ListView)v.findViewById(R.id.teammember_score_history);
 		v.findViewsWithText(teammemberLabels, getResources().getString(R.string.teammember_name_default), View.FIND_VIEWS_WITH_TEXT);
-		v.findViewsWithText(teammemberScoreButtons, getResources().getString(R.string.score), View.FIND_VIEWS_WITH_TEXT);
+		v.findViewsWithText(teammemberScoreButtons, getResources().getString(R.string.score_label), View.FIND_VIEWS_WITH_TEXT);
 
 		gameStartButton.setOnClickListener(gameStartClickListener);
 		

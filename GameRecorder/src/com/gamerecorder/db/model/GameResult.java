@@ -44,7 +44,7 @@ public class GameResult {
 	private int scoreLeft,scoreRight;	
 	
 	@ForeignCollectionField(eager = false)
-	private ForeignCollection<GameResultDetail> details;
+	private ForeignCollection<GameResultStatistic> details;
 	
 	public int getId() {
 		return id;
@@ -119,16 +119,29 @@ public class GameResult {
 		this.specialMark = specialMark;
 	}
 
-	public ForeignCollection<GameResultDetail> getDetails() {
+	public ForeignCollection<GameResultStatistic> getDetails() {
 		return details;
 	}
 	
-	public GameResult(GameTeam teamLeft,GameTeam teamRight){
+	public GameResult(String gameKind,GameTeam teamLeft,GameTeam teamRight){
 		this();
+		this.gameKind = gameKind;
 		this.teamLeft = teamLeft;
 		this.teamRight = teamRight;
 		this.startDate = new Date();
 	}
 	
 	public GameResult(){}
+	
+	public String getHistoryRecordDesc(){
+		StringBuilder result = new StringBuilder();
+		
+		result.append(teamLeft.getName() + "    " + scoreLeft);
+		result.append(" VS ");
+		result.append(teamRight.getName() + "    " + scoreRight);	
+
+		return result.toString();
+		
+	}
+	
 }

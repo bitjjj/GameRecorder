@@ -56,9 +56,9 @@
                     android:layout_weight="0.3"
                     android:ems="10"
                     android:gravity="center_horizontal|center"
-                    android:hint="@string/score_0"
+                    android:hint="@string/score_label_0"
                     android:inputType="number"
-                    android:text="@string/score_0" >
+                    android:text="@string/score_label_0" >
                 </EditText>
 
                 <Button
@@ -74,9 +74,9 @@
                     android:layout_weight="0.3"
                     android:ems="10"
                     android:gravity="center_horizontal|center"
-                    android:hint="@string/score_0"
+                    android:hint="@string/score_label_0"
                     android:inputType="number"
-                    android:text="@string/score_0" >
+                    android:text="@string/score_label_0" >
                 </EditText>
             </LinearLayout>
 
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_1"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_left_score_1_2"
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_1"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_left_score_1_3"
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_1"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
 
                 <com.gamerecorder.widget.TextViewInfo
                     android:id="@+id/teammember_right_name_1"
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_1"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_right_score_1_2"
@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_1"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_right_score_1_3"
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_1"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
             </LinearLayout>
 
             <LinearLayout
@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_2"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_left_score_2_2"
@@ -185,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_2"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_left_score_2_3"
@@ -194,7 +194,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_2"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
 
                 <com.gamerecorder.widget.TextViewInfo
                     android:id="@+id/teammember_right_name_2"
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_2"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_right_score_2_2"
@@ -220,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_2"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_right_score_2_3"
@@ -229,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_2"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
             </LinearLayout>
 
             <LinearLayout
@@ -252,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_3"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_left_score_3_2"
@@ -261,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_3"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_left_score_3_3"
@@ -270,7 +270,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_3"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
 
                 <com.gamerecorder.widget.TextViewInfo
                     android:id="@+id/teammember_right_name_3"
@@ -287,7 +287,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_3"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_right_score_3_2"
@@ -296,7 +296,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_3"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_right_score_3_3"
@@ -305,7 +305,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_3"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
             </LinearLayout>
 
             <LinearLayout
@@ -328,7 +328,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_4"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_left_score_4_2"
@@ -337,7 +337,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_4"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_left_score_4_3"
@@ -346,7 +346,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_4"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
 
                 <com.gamerecorder.widget.TextViewInfo
                     android:id="@+id/teammember_right_name_4"
@@ -363,7 +363,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_4"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_right_score_4_2"
@@ -372,7 +372,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_4"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_right_score_4_3"
@@ -381,7 +381,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_4"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
             </LinearLayout>
 
             <LinearLayout
@@ -404,7 +404,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_5"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_left_score_5_2"
@@ -413,7 +413,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_5"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_left_score_5_3"
@@ -422,7 +422,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_left_name_5"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
 
                 <com.gamerecorder.widget.TextViewInfo
                     android:id="@+id/teammember_right_name_5"
@@ -439,7 +439,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_5"
-                    android:text="@string/score_1" />
+                    android:text="@string/score_label_1" />
 
                 <Button
                     android:id="@+id/teammember_right_score_5_2"
@@ -448,7 +448,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_5"
-                    android:text="@string/score_2" />
+                    android:text="@string/score_label_2" />
 
                 <Button
                     android:id="@+id/teammember_right_score_5_3"
@@ -457,7 +457,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:tag="teammember_right_name_5"
-                    android:text="@string/score_3" />
+                    android:text="@string/score_label_3" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

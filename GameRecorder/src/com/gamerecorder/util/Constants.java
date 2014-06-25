@@ -9,4 +9,6 @@ public class Constants {
 	public final static String GAME_ID = "GAMEID";
 	
 	public final static int DELETE_MARK = -1;
+	
+	public final static int NOT_PTS = -999999;
 }

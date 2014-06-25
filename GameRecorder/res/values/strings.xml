@@ -6,6 +6,8 @@
     <string name="set_teammebers">设置队伍成员</string>
     <string name="football_name">足球</string>
     <string name="basketball_name">篮球</string>
+    <string name="football_name_en">football</string>
+    <string name="basketball_name_en">basketball</string>
     <string name="team_tip">请选择球队</string>
     <string name="teammember_tip">请输入球员</string>
     <string name="team_empty_tip">没有球队</string>
@@ -21,11 +23,11 @@
     <string name="vs_history_details_label">交战详细数据</string>
     <string name="vs_history_details_empty">没有交战详细数据</string>
     <string name="teammember_name_default">球员</string>
-    <string name="score">分</string>
-    <string name="score_0">0</string>
-    <string name="score_1">1分</string>
-    <string name="score_2">2分</string>
-    <string name="score_3">3分</string>
+    <string name="score_label">分</string>
+    <string name="score_label_0">0</string>
+    <string name="score_label_1">1分</string>
+    <string name="score_label_2">2分</string>
+    <string name="score_label_3">3分</string>
     <string name="start_label">开始</string>
     <string name="end_label">结束</string>
     <string name="delete_label">删除</string>
@@ -39,25 +41,25 @@
     <string name="team_name_score_tag">team_name_score</string>
     <string name="team_name_game_type_tag">team_name_game_type</string>
  	<string name="stats_desc">【%1$s】 %2$s : %3$s</string>
-    <string name="basketball_pts">得分</string>
-    <string name="basketball_fouls">犯规</string>
-    <string name="basketball_asts">助攻</string>
-    <string name="basketball_rebs">篮板</string>
-    <string name="basketball_stls">抢断</string>
-    <string name="basketball_blks">盖帽</string>
+    <string name="game_statistic_type_pts">得分</string>
+    <string name="game_statistic_type_fouls">犯规</string>
+    <string name="game_statistic_type_asts">助攻</string>
+    <string name="game_statistic_type_rebs">篮板</string>
+    <string name="game_statistic_type_stls">抢断</string>
+    <string name="game_statistic_type_blks">盖帽</string>
     <string-array name="basketball_scores">
-        <item>@string/score_1</item>
-        <item>@string/score_2</item>
-        <item>@string/score_3</item>
+        <item>@string/score_label_1</item>
+        <item>@string/score_label_2</item>
+        <item>@string/score_label_3</item>
     </string-array>
     
-    <string-array name="basketball_game_types">
-        <item>@string/basketball_pts</item>
-        <item>@string/basketball_fouls</item>
-        <item>@string/basketball_asts</item>
-        <item>@string/basketball_rebs</item>
-        <item>@string/basketball_stls</item>
-        <item>@string/basketball_blks</item>
+    <string-array name="basketball_statistic_types">
+        <item>@string/game_statistic_type_pts</item>
+        <item>@string/game_statistic_type_fouls</item>
+        <item>@string/game_statistic_type_asts</item>
+        <item>@string/game_statistic_type_rebs</item>
+        <item>@string/game_statistic_type_stls</item>
+        <item>@string/game_statistic_type_blks</item>
     </string-array>
 
 </resources>

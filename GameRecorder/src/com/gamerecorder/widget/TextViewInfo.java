@@ -7,17 +7,27 @@ import android.widget.TextView;
 
 public class TextViewInfo extends TextView {
 
+	private int teammemberId;
+	
 	public TextViewInfo(Context context) {
 		super(context);
 	}
 
 	public TextViewInfo(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-
 	}
 
 	public TextViewInfo(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		this(context, attrs,0);
+	}
+	
+	
+	public void setTeammemberId(int id){
+		this.teammemberId = id;
+	}
+	
+	public int getTeammeberId(){
+		return this.teammemberId;
 	}
 
 	@Override

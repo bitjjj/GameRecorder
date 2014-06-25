@@ -1,9 +1,11 @@
 package com.gamerecorder.fragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseBooleanArray;
@@ -25,12 +27,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gamerecorder.activity.MainActivity;
 import com.gamerecorder.activity.R;
+import com.gamerecorder.db.dao.GameResultDao;
+import com.gamerecorder.db.dao.GameResultStatisticDao;
+import com.gamerecorder.db.dao.GameTeamDao;
+import com.gamerecorder.db.dao.GameTeammemberDao;
+import com.gamerecorder.db.model.GameResult;
+import com.gamerecorder.db.model.GameResultStatistic;
+import com.gamerecorder.db.model.GameTeam;
+import com.gamerecorder.db.model.GameTeammember;
 import com.gamerecorder.events.TeamListChangeEvent;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
 import com.gamerecorder.model.Game;
-import com.gamerecorder.util.FileUtil;
+import com.gamerecorder.util.Constants;
 import com.gamerecorder.util.ViewUtils;
 import com.gamerecorder.widget.ListViewActionMode;
 import com.gamerecorder.widget.TextViewInfo;
@@ -56,15 +65,12 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 	private ArrayAdapter<String> teamScoreListAdapter;
 	private ArrayList<String> teamScoreList;
 	
-	private Game gameModel;
-	
-	public static BasketballVSFragment newInstance(int position) {
-		BasketballVSFragment f = new BasketballVSFragment();
-		Bundle b = new Bundle();
-		//b.putInt(ARG_POSITION, position);
-		f.setArguments(b);
-		return f;
-	}
+	//private Game gameModel;
+	private GameResult gameResult;
+	private GameTeamDao teamDao;
+	private GameTeammemberDao teammemberDao;
+	private GameResultDao resultDao;
+	private GameResultStatisticDao resultStatDao;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,7 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		teammemberGameTypeSpinners = ViewUtils.getViewsByTag((ViewGroup)v, getResources().getString(R.string.team_name_game_type_tag));
 		
 		ArrayAdapter<String> gameScoresAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.basketball_scores));
-		ArrayAdapter<String> gameTypesAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.basketball_game_types));
+		ArrayAdapter<String> gameTypesAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.basketball_statistic_types));
 		
 		gameStartButton.setOnClickListener(gameStartClickListener);
 		
@@ -138,10 +144,14 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				team1Spinner.setEnabled(false);
 				team2Spinner.setEnabled(false);
 				
-				MainActivity mainActivity = (MainActivity)getActivity();
+				/*MainActivity mainActivity = (MainActivity)getActivity();
 				gameModel = new Game(mainActivity.getGameKind(),
 						team1Spinner.getSelectedItem().toString(), team2Spinner.getSelectedItem().toString());
-				gameModel.startGame();
+				gameModel.startGame();*/
+				gameResult = new GameResult(getResources().getString(R.string.basketball_name_en), 
+						teamDao.queryByName(team1Spinner.getSelectedItem().toString()), 
+						teamDao.queryByName(team2Spinner.getSelectedItem().toString()));
+				resultDao.create(gameResult);
 			}
 			else{
 				btn.setText(startLabel);
@@ -154,10 +164,13 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				teamScoreListAdapter.clear();
 				teamScoreListAdapter.notifyDataSetChanged();
 				
-				gameModel.endGame();
-				List<Object> historyList = FileUtil.getGameHistoryFile(getActivity());
-				historyList.add(gameModel);
-				FileUtil.writeGameHistoryFile(getActivity(), historyList);
+				
+				gameResult.setEndDate(new Date());
+				resultDao.update(gameResult);
+				//gameModel.endGame();
+				//List<Object> historyList = FileUtil.getGameHistoryFile(getActivity());
+				//historyList.add(gameModel);
+				//FileUtil.writeGameHistoryFile(getActivity(), historyList);
 			}
 		}
 		
@@ -171,29 +184,44 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				return;
 			}
 			
+			TextViewInfo vInfo = (TextViewInfo)view;
 			
-			String tag = view.getTag().toString(), memeberIndex = tag.substring(tag.lastIndexOf("_") + 1),
-					name = ((TextView)view).getText().toString(),desc;
-			Spinner gameTypeSpinner = (Spinner)((ViewGroup)view.getParent()).findViewWithTag("team_name_game_type_" + memeberIndex),
-					scoreSpinner = (Spinner)((ViewGroup)view.getParent()).findViewWithTag("team_name_score_" + memeberIndex),
+			if(vInfo.getText().equals(getResources().getString(R.string.teammember_name_default))){
+				return;
+			}
+			
+			String tag = vInfo.getTag().toString(), memeberIndex = tag.substring(tag.lastIndexOf("_") + 1),
+					name = vInfo.getText().toString(),desc;
+			Spinner gameTypeSpinner = (Spinner)((ViewGroup)vInfo.getParent()).findViewWithTag("team_name_game_type_" + memeberIndex),
+					scoreSpinner = (Spinner)((ViewGroup)vInfo.getParent()).findViewWithTag("team_name_score_" + memeberIndex),
 					teamSpinner = tag.toString().contains("left") ? team1Spinner : team2Spinner;
 			EditText scoreEditText = tag.toString().contains("left") ? score1EditText : score2EditText;
-			int newScore = Integer.valueOf(scoreSpinner.getSelectedItem().toString().substring(0,1));
+			int newScore = Integer.valueOf(scoreSpinner.getSelectedItem().toString().substring(0,1)),teammeberId = vInfo.getTeammeberId();
 			
-			boolean gotPoints = gameTypeSpinner.getSelectedItem().toString().equals(getResources().getString(R.string.basketball_pts));
+			boolean gotPoints = gameTypeSpinner.getSelectedItem().toString().equals(getResources().getString(R.string.game_statistic_type_pts));
 			if(gotPoints){
 				scoreEditText.setText(Integer.valueOf(scoreEditText.getEditableText().toString()) + newScore + "");
 				
-				gameModel.addScore(teamSpinner.getSelectedItem().toString(), newScore);
-				gameModel.addStatistics(teamSpinner.getSelectedItem().toString(), name, newScore, Game.BasketballType.PTS);
-				
+				//gameModel.addScore(teamSpinner.getSelectedItem().toString(), newScore);
+				//gameModel.addStatistics(teamSpinner.getSelectedItem().toString(), name, newScore, Game.BasketballType.PTS);
+				if(tag.toString().contains("left")){
+					gameResult.setScoreLeft(gameResult.getScoreLeft()+newScore);
+				}
+				else{
+					gameResult.setScoreRight(gameResult.getScoreRight()+newScore);
+				}
+				resultDao.update(gameResult);
+
 				desc = scoreSpinner.getSelectedItem().toString();
 			}
 			else{
-				gameModel.addStatistics(teamSpinner.getSelectedItem().toString(), name, null, getBasketballTypeIndex(gameTypeSpinner.getSelectedItem().toString()));
+				//gameModel.addStatistics(teamSpinner.getSelectedItem().toString(), name, null, getStatisticTypeIndex(gameTypeSpinner.getSelectedItem().toString()));
 				
 				desc = gameTypeSpinner.getSelectedItem().toString();
 			}
+			
+			GameResultStatistic statistic = new GameResultStatistic(gameResult, teammemberDao.queryById(teammeberId), gotPoints ? newScore : null, gameTypeSpinner.getSelectedItem().toString());
+			resultStatDao.create(statistic);
 			
 			teamScoreList.add(0,String.format(getResources().getString(R.string.stats_desc),teamSpinner.getSelectedItem().toString(),name,desc));
 			teamScoreListAdapter.notifyDataSetChanged();
@@ -204,14 +232,18 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 	public void onEvent(TeamListChangeEvent event) {
 		
 		if(gameStartButton.getText().equals(getResources().getString(R.string.start_label))){
-			teamData = (Map)FileUtil.getSettingsFile(getActivity());
+			/*teamData = (Map)FileUtil.getSettingsFile(getActivity());
 			
 			List<String> teamNames = new ArrayList<String>();
 			for(Map.Entry<String, List<String>> entry:teamData.entrySet()){
 				teamNames.add(entry.getKey());
+			}*/
+			
+			List<String> teamNames = new ArrayList<String>();
+			for(GameTeam team:teamDao.queryByMark(Constants.DELETE_MARK)){
+				teamNames.add(team.getName());
 			}
-			
-			
+
 			team1ListAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, teamNames);
 			team1ListAdapter.setDropDownViewResource(R.layout.dropdown_item);
 			
@@ -231,7 +263,13 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 
 		public void onItemSelected(AdapterView<?> spinner, View view, int pos,long arg3) {
 			String teamName = team1ListAdapter.getItem(pos),mark = "";
-			List<String> teammembers = teamData.get(teamName);
+			//List<String> teammembers = teamData.get(teamName);
+			//List<String> teammembers = new ArrayList<String>();
+			GameTeam team = teamDao.queryByName(teamName);
+			GameTeammember[] teammembers  = team.getMembers().toArray(new GameTeammember[0]);
+			//for(GameTeammember teammember:teammemberArr){
+			//	teammembers.add(teammember.getName());
+			//}
 			
 			if(spinner.getId() == R.id.team_name_list_1){
 				mark = "left";
@@ -246,10 +284,11 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				}
 			}
 			
-			for(int i=0;i<teammembers.size();i++){
+			for(int i=0;i<teammembers.length;i++){
 				for(View v:teammemberLabels){
 					if(v.getTag().toString().equals("teammember_" + mark + "_name_" + (i+1))){
-						((TextView)v).setText(teammembers.get(i));
+						((TextViewInfo)v).setText(teammembers[i].getName());
+						((TextViewInfo)v).setTeammemberId(teammembers[i].getId());
 					}
 				}
 			}
@@ -303,8 +342,8 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
         return super.onContextItemSelected(item);  
     } 
 	
-	private int getBasketballTypeIndex(String typeName){
-		String[] gameTypes = getResources().getStringArray(R.array.basketball_game_types);
+	private int getStatisticTypeIndex(String typeName){
+		String[] gameTypes = getResources().getStringArray(R.array.basketball_statistic_types);
 		for(int i = 0; i < gameTypes.length; i++){
 			if(gameTypes[i].equals(typeName)){
 				return i;
@@ -313,6 +352,18 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		return -1;
 	}
 	
+	
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		
+		teamDao = new GameTeamDao(activity);
+		teammemberDao = new GameTeammemberDao(activity);
+		resultDao = new GameResultDao(activity);
+		resultStatDao = new GameResultStatisticDao(activity);
+	}
+
 	@Override  
     public void onStop() { 
         super.onStop();  
