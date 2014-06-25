@@ -8,7 +8,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.SparseBooleanArray;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -37,10 +37,11 @@ import com.gamerecorder.db.model.GameResultStatistic;
 import com.gamerecorder.db.model.GameTeam;
 import com.gamerecorder.db.model.GameTeammember;
 import com.gamerecorder.events.TeamListChangeEvent;
+import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
-import com.gamerecorder.model.Game;
 import com.gamerecorder.util.Constants;
 import com.gamerecorder.util.ViewUtils;
+import com.gamerecorder.widget.GameResultStatisticAdapter;
 import com.gamerecorder.widget.ListViewActionMode;
 import com.gamerecorder.widget.TextViewInfo;
 
@@ -62,10 +63,9 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 	private ArrayList<View> teammemberGameTypeSpinners;
 	
 	private ListView teamScoreListView;
-	private ArrayAdapter<String> teamScoreListAdapter;
-	private ArrayList<String> teamScoreList;
+	private ArrayAdapter<GameResultStatistic> teamScoreListAdapter;
+	private ArrayList<GameResultStatistic> teamScoreList;
 	
-	//private Game gameModel;
 	private GameResult gameResult;
 	private GameTeamDao teamDao;
 	private GameTeammemberDao teammemberDao;
@@ -115,17 +115,16 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		}
 		
 		onEvent(new TeamListChangeEvent());
-		
-		teamScoreList = new ArrayList<String>();
-		teamScoreListAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, teamScoreList);
+
+		teamScoreList = new ArrayList<GameResultStatistic>();
+		teamScoreListAdapter = new GameResultStatisticAdapter(getActivity(), android.R.layout.simple_list_item_activated_1, teamScoreList);
 		teamScoreListView.setAdapter(teamScoreListAdapter);
 		
 		teamScoreListView.setLayoutAnimation(
 		        new LayoutAnimationController(AnimationUtils.loadAnimation(getActivity(), R.anim.list_animation), 0.5f));
 		
 		teamScoreListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		//teamScoreListView.setMultiChoiceModeListener(new ActionModeCallback());
-		teamScoreListView.setMultiChoiceModeListener(new ListViewActionMode<String>(getActivity(), teamScoreListView, teamScoreListAdapter,this));
+		teamScoreListView.setMultiChoiceModeListener(new ListViewActionMode<GameResultStatistic>(getActivity(), teamScoreListView, teamScoreListAdapter,this));
 		
 		return v;
 	}
@@ -143,11 +142,7 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				btn.setText(getResources().getString(R.string.end_label));
 				team1Spinner.setEnabled(false);
 				team2Spinner.setEnabled(false);
-				
-				/*MainActivity mainActivity = (MainActivity)getActivity();
-				gameModel = new Game(mainActivity.getGameKind(),
-						team1Spinner.getSelectedItem().toString(), team2Spinner.getSelectedItem().toString());
-				gameModel.startGame();*/
+
 				gameResult = new GameResult(getResources().getString(R.string.basketball_name_en), 
 						teamDao.queryByName(team1Spinner.getSelectedItem().toString()), 
 						teamDao.queryByName(team2Spinner.getSelectedItem().toString()));
@@ -167,10 +162,6 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				
 				gameResult.setEndDate(new Date());
 				resultDao.update(gameResult);
-				//gameModel.endGame();
-				//List<Object> historyList = FileUtil.getGameHistoryFile(getActivity());
-				//historyList.add(gameModel);
-				//FileUtil.writeGameHistoryFile(getActivity(), historyList);
 			}
 		}
 		
@@ -190,20 +181,15 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				return;
 			}
 			
-			String tag = vInfo.getTag().toString(), memeberIndex = tag.substring(tag.lastIndexOf("_") + 1),
-					name = vInfo.getText().toString(),desc;
+			String tag = vInfo.getTag().toString(), memeberIndex = tag.substring(tag.lastIndexOf("_") + 1);
 			Spinner gameTypeSpinner = (Spinner)((ViewGroup)vInfo.getParent()).findViewWithTag("team_name_game_type_" + memeberIndex),
-					scoreSpinner = (Spinner)((ViewGroup)vInfo.getParent()).findViewWithTag("team_name_score_" + memeberIndex),
-					teamSpinner = tag.toString().contains("left") ? team1Spinner : team2Spinner;
+					scoreSpinner = (Spinner)((ViewGroup)vInfo.getParent()).findViewWithTag("team_name_score_" + memeberIndex);
 			EditText scoreEditText = tag.toString().contains("left") ? score1EditText : score2EditText;
 			int newScore = Integer.valueOf(scoreSpinner.getSelectedItem().toString().substring(0,1)),teammeberId = vInfo.getTeammeberId();
 			
 			boolean gotPoints = gameTypeSpinner.getSelectedItem().toString().equals(getResources().getString(R.string.game_statistic_type_pts));
 			if(gotPoints){
 				scoreEditText.setText(Integer.valueOf(scoreEditText.getEditableText().toString()) + newScore + "");
-				
-				//gameModel.addScore(teamSpinner.getSelectedItem().toString(), newScore);
-				//gameModel.addStatistics(teamSpinner.getSelectedItem().toString(), name, newScore, Game.BasketballType.PTS);
 				if(tag.toString().contains("left")){
 					gameResult.setScoreLeft(gameResult.getScoreLeft()+newScore);
 				}
@@ -211,19 +197,13 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 					gameResult.setScoreRight(gameResult.getScoreRight()+newScore);
 				}
 				resultDao.update(gameResult);
+			}
 
-				desc = scoreSpinner.getSelectedItem().toString();
-			}
-			else{
-				//gameModel.addStatistics(teamSpinner.getSelectedItem().toString(), name, null, getStatisticTypeIndex(gameTypeSpinner.getSelectedItem().toString()));
-				
-				desc = gameTypeSpinner.getSelectedItem().toString();
-			}
 			
 			GameResultStatistic statistic = new GameResultStatistic(gameResult, teammemberDao.queryById(teammeberId), gotPoints ? newScore : null, gameTypeSpinner.getSelectedItem().toString());
 			resultStatDao.create(statistic);
-			
-			teamScoreList.add(0,String.format(getResources().getString(R.string.stats_desc),teamSpinner.getSelectedItem().toString(),name,desc));
+
+			teamScoreList.add(0,statistic);
 			teamScoreListAdapter.notifyDataSetChanged();
 		}
 	};
@@ -232,13 +212,7 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 	public void onEvent(TeamListChangeEvent event) {
 		
 		if(gameStartButton.getText().equals(getResources().getString(R.string.start_label))){
-			/*teamData = (Map)FileUtil.getSettingsFile(getActivity());
-			
-			List<String> teamNames = new ArrayList<String>();
-			for(Map.Entry<String, List<String>> entry:teamData.entrySet()){
-				teamNames.add(entry.getKey());
-			}*/
-			
+
 			List<String> teamNames = new ArrayList<String>();
 			for(GameTeam team:teamDao.queryByMark(Constants.DELETE_MARK)){
 				teamNames.add(team.getName());
@@ -263,13 +237,8 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 
 		public void onItemSelected(AdapterView<?> spinner, View view, int pos,long arg3) {
 			String teamName = team1ListAdapter.getItem(pos),mark = "";
-			//List<String> teammembers = teamData.get(teamName);
-			//List<String> teammembers = new ArrayList<String>();
 			GameTeam team = teamDao.queryByName(teamName);
 			GameTeammember[] teammembers  = team.getMembers().toArray(new GameTeammember[0]);
-			//for(GameTeammember teammember:teammemberArr){
-			//	teammembers.add(teammember.getName());
-			//}
 			
 			if(spinner.getId() == R.id.team_name_list_1){
 				mark = "left";
@@ -309,8 +278,10 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 
 
 	@Override
-	public void onDeleteItems(SparseBooleanArray selectedIndexes) {
+	public void deleteSelectedItems(List<Identity> selectedItems) {
+		Log.d(TAG, selectedItems.toString());
 		
+		resultStatDao.delById(selectedItems);
 	}
 	
 	@Override
@@ -341,18 +312,6 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		}
         return super.onContextItemSelected(item);  
     } 
-	
-	private int getStatisticTypeIndex(String typeName){
-		String[] gameTypes = getResources().getStringArray(R.array.basketball_statistic_types);
-		for(int i = 0; i < gameTypes.length; i++){
-			if(gameTypes[i].equals(typeName)){
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	
 	
 	@Override
 	public void onAttach(Activity activity) {

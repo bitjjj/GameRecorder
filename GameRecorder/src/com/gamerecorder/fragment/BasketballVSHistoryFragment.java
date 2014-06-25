@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.gamerecorder.activity.R;
 import com.gamerecorder.activity.VSHistoryDetailsActivity;
 import com.gamerecorder.events.TeamVSHistoryChangeEvent;
+import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
 import com.gamerecorder.model.Game;
 import com.gamerecorder.util.Constants;
@@ -52,14 +53,6 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
 			Locale.getDefault());
-
-	public static BasketballVSHistoryFragmentOld newInstance(int position) {
-		BasketballVSHistoryFragmentOld f = new BasketballVSHistoryFragmentOld();
-		Bundle b = new Bundle();
-		// b.putInt(ARG_POSITION, position);
-		f.setArguments(b);
-		return f;
-	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -176,18 +169,18 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 
 	}
 
-	private class Item {
+	private class Item implements Identity{
 
 		public static final int ITEM = 0;
 		public static final int SECTION = 1;
 
-		private int type;
+		private int type,id;
 
-		private String desc,id;
+		private String desc;
 		
 		private Date start, end;
 
-		public String getId() {
+		public int getId() {
 			return id;
 		}
 		
@@ -216,7 +209,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 			this.start = start;
 		}
 		
-		public Item(int type, String id,String desc, Date start, Date end) {
+		public Item(int type, int id,String desc, Date start, Date end) {
 			this.type = type;
 			this.id = id;
 			this.desc = desc;
@@ -291,7 +284,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 					startDateSet.add(startDate);
 				}
 				
-				item = new Item(Item.ITEM,gm.getId(), gm.getHistoryRecordDesc(), gm.getStartDate(), gm.getEndDate());
+				item = new Item(Item.ITEM,99999999, gm.getHistoryRecordDesc(), gm.getStartDate(), gm.getEndDate());
 				items.add(item);
 
 			}
@@ -307,7 +300,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 	}
 
 	@Override
-	public void onDeleteItems(SparseBooleanArray selectedIndexes) {
+	public void deleteSelectedItems(List<Identity> selectedIndexes) {
 		
 	}
 	

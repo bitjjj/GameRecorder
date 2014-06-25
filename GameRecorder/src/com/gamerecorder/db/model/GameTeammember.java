@@ -21,7 +21,7 @@ public class GameTeammember {
 	@DatabaseField(columnName = COLUMN_MARK,defaultValue = "0")
 	public int specialMark;
 	
-	@DatabaseField(foreign = true, canBeNull = false)
+	@DatabaseField(foreign = true, canBeNull = false,foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 1)
 	public GameTeam team;
 	
 	public int getId() {

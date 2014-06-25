@@ -2,11 +2,12 @@ package com.gamerecorder.db.model;
 
 import java.util.Date;
 
+import com.gamerecorder.interfaces.Identity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = GameResultStatistic.TABLE_NAME)
-public class GameResultStatistic {
+public class GameResultStatistic implements Identity{
 
 	public static final String TABLE_NAME = "game_result_detail";
 	public static final String COLUMN_ID = "id";
@@ -62,7 +63,7 @@ public class GameResultStatistic {
 	
 	private void setDesc(Integer score,String type){
 		String record = teammember.getName();
-		if(result != null){
+		if(score != null){
 			record += "$"+score;
 		}
 		else{
@@ -91,15 +92,15 @@ public class GameResultStatistic {
 	}
 	
 	public String getStatisticType(){
-		return this.desc.split("$")[1];
+		return this.desc.split("\\$")[2];
 	}
 	
 	public int getScore(){
-		return Integer.valueOf(this.desc.split("$")[0]);
+		return Integer.valueOf(this.desc.split("\\$")[1]);
 	}
 	
 	public Date getTime(){
-		return new Date(Integer.valueOf(this.desc.split("$")[2]));
+		return new Date(Integer.valueOf(this.desc.split("\\$")[3]));
 	}
 	
 }

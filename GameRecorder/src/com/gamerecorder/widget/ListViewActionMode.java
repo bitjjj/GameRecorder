@@ -1,5 +1,8 @@
 package com.gamerecorder.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -11,9 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.gamerecorder.activity.R;
+import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
 
-public class ListViewActionMode<T> implements AbsListView.MultiChoiceModeListener{
+public class ListViewActionMode<T extends Identity> implements AbsListView.MultiChoiceModeListener{
 	
 	private Context ctx;
 	private ListView listView;
@@ -34,16 +38,17 @@ public class ListViewActionMode<T> implements AbsListView.MultiChoiceModeListene
 
 		switch (item.getItemId()) {
 		case R.id.menu_delete:
-
+			List<Identity> delItems = new ArrayList<Identity>();
             for(int i = itemCount-1; i >= 0; i--){
                 if(checkedItemPositions.get(i)){
+                	delItems.add(listAdapter.getItem(i));
                 	listAdapter.remove(listAdapter.getItem(i));
                 }
             }
             checkedItemPositions.clear();
             listAdapter.notifyDataSetChanged();
             
-            delCallback.onDeleteItems(checkedItemPositions);
+            delCallback.deleteSelectedItems(delItems);
             
             mode.finish();
 			break;

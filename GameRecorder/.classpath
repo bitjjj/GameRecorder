@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/eventbus-2.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/ormlite-android-4.48.jar"/>
 	<classpathentry kind="lib" path="libs/ormlite-core-4.48.jar"/>
+	<classpathentry kind="lib" path="libs/butterknife-5.1.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

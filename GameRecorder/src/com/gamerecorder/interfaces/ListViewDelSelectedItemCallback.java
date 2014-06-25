@@ -1,8 +1,8 @@
 package com.gamerecorder.interfaces;
 
-import android.util.SparseBooleanArray;
+import java.util.List;
 
 public interface ListViewDelSelectedItemCallback {
 
-	public void onDeleteItems(SparseBooleanArray selectedIndexes);
+	public void deleteSelectedItems(List<Identity> selectedItems);
 }

@@ -2,13 +2,14 @@ package com.gamerecorder.db.model;
 
 import java.util.Date;
 
+import com.gamerecorder.interfaces.Identity;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = GameResult.TABLE_NAME)
-public class GameResult {
+public class GameResult implements Identity{
 
 	public static final String TABLE_NAME = "game_result";
 	public static final String COLUMN_ID = "id";
