@@ -26,6 +26,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 import com.gamerecorder.activity.R;
 import com.gamerecorder.db.dao.GameResultDao;
@@ -54,15 +57,17 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 	
 	private Map<String, List<String>> teamData;
 	
-	private Spinner team1Spinner,team2Spinner;
+	@InjectView(R.id.team_name_list_1) Spinner team1Spinner;
+	@InjectView(R.id.team_name_list_2) Spinner team2Spinner;
 	private ArrayAdapter<String> team1ListAdapter,team2ListAdapter;
-	private EditText score1EditText,score2EditText;
-	private Button gameStartButton;
+	@InjectView(R.id.team_score_1) EditText score1EditText;
+	@InjectView(R.id.team_score_1) EditText score2EditText;
+	@InjectView(R.id.game_start) Button gameStartButton;
 	private ArrayList<View> teammemberLabels = new ArrayList<View>();
 	private ArrayList<View> teammemberScoreSpinners;
 	private ArrayList<View> teammemberGameTypeSpinners;
 	
-	private ListView teamScoreListView;
+	@InjectView(R.id.teammember_score_history) ListView teamScoreListView;
 	private ArrayAdapter<GameResultStatistic> teamScoreListAdapter;
 	private ArrayList<GameResultStatistic> teamScoreList;
 	
@@ -85,34 +90,23 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		Bundle savedInstanceState ){
 		
 		View v = inflater.inflate( R.layout.fragment_basketball_vs, container, false );
-		
-		team1Spinner = (Spinner)v.findViewById(R.id.team_name_list_1);
-		team2Spinner = (Spinner)v.findViewById(R.id.team_name_list_2);
-		score1EditText = (EditText)v.findViewById(R.id.team_score_1);
-		score2EditText = (EditText)v.findViewById(R.id.team_score_2);
-		gameStartButton = (Button)v.findViewById(R.id.game_start);
-		teamScoreListView = (ListView)v.findViewById(R.id.teammember_score_history);
+		ButterKnife.inject(this, v);
+
 		v.findViewsWithText(teammemberLabels, getActivity().getResources().getString(R.string.teammember_name_default), View.FIND_VIEWS_WITH_TEXT);
 		teammemberScoreSpinners = ViewUtils.getViewsByTag((ViewGroup)v, getResources().getString(R.string.team_name_score_tag));
 		teammemberGameTypeSpinners = ViewUtils.getViewsByTag((ViewGroup)v, getResources().getString(R.string.team_name_game_type_tag));
 		
 		ArrayAdapter<String> gameScoresAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.basketball_scores));
 		ArrayAdapter<String> gameTypesAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.basketball_statistic_types));
-		
-		gameStartButton.setOnClickListener(gameStartClickListener);
-		
+
 		for(View view:teammemberLabels){
 			registerForContextMenu(view);
 			view.setOnClickListener(teammemberClickListener);
 		}
+
 		
-		for(View view:teammemberScoreSpinners){
-			((Spinner)view).setAdapter(gameScoresAdapter);
-		}
-		
-		for(View view:teammemberGameTypeSpinners){
-			((Spinner)view).setAdapter(gameTypesAdapter);
-		}
+		ButterKnife.apply(teammemberScoreSpinners, ViewUtils.SET_SPINNER_ADAPTER, gameScoresAdapter);
+		ButterKnife.apply(teammemberGameTypeSpinners, ViewUtils.SET_SPINNER_ADAPTER, gameTypesAdapter);
 		
 		onEvent(new TeamListChangeEvent());
 
@@ -128,10 +122,9 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		
 		return v;
 	}
-	
-	private View.OnClickListener gameStartClickListener = new View.OnClickListener(){
-		@Override
-		public void onClick(View view) {
+
+	@OnClick(R.id.game_start)
+		public void gameStartButton(View view) {
 			Button btn = (Button)view;
 			String startLabel = getResources().getString(R.string.start_label);
 			if(btn.getText().equals(startLabel) 
@@ -164,8 +157,7 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 				resultDao.update(gameResult);
 			}
 		}
-		
-	};
+
 	
 	private View.OnClickListener teammemberClickListener = new View.OnClickListener(){
 		@Override

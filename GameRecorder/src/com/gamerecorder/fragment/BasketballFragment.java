@@ -11,6 +11,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.gamerecorder.activity.R;
@@ -21,8 +23,8 @@ import de.greenrobot.event.EventBus;
 public class BasketballFragment extends Fragment{
 
 	private final static String TAG = "BasketballFragment";
-	private PagerSlidingTabStrip tabs;
-	private ViewPager pager;
+	@InjectView(R.id.tabs) PagerSlidingTabStrip tabs;
+	@InjectView(R.id.pager) ViewPager pager;
 	private BasketballPagerAdapter adapter;
 
 	@Override
@@ -31,8 +33,10 @@ public class BasketballFragment extends Fragment{
 
 		View v = inflater.inflate(R.layout.fragment_basketball, container,false);
 
-		tabs = (PagerSlidingTabStrip) v.findViewById(R.id.tabs);
-		pager = (ViewPager) v.findViewById(R.id.pager);
+		ButterKnife.inject(this, v);
+		
+		//tabs = (PagerSlidingTabStrip) v.findViewById(R.id.tabs);
+		//pager = (ViewPager) v.findViewById(R.id.pager);
 		adapter = new BasketballPagerAdapter(getActivity().getSupportFragmentManager());
 
 		pager.setAdapter(adapter);
@@ -64,8 +68,6 @@ public class BasketballFragment extends Fragment{
 			if(position == 1){
 				FragmentPagerAdapter f = (FragmentPagerAdapter)pager.getAdapter();
 				BasketballVSFragment bf0 = (BasketballVSFragment)f.instantiateItem(pager,0);
-				//BasketballVSHistoryFragment bf1 = (BasketballVSHistoryFragment)f.instantiateItem(pager,1);
-				//((onTeamVSHistoryLoaded)bf1).loadTeamVSHistoryList(bf0.getGameTeams());
 				EventBus.getDefault().post(new TeamVSHistoryChangeEvent(bf0.getGameTeams()));
 			}
 		}
@@ -98,26 +100,11 @@ public class BasketballFragment extends Fragment{
 		@Override
 		public Fragment getItem(int position) {
 
-			// return (Fragment)fragments[position].newInstance();
 			return Fragment.instantiate(BasketballFragment.this.getActivity(),
 					fragments[position]);
 
 		}
 
 	}
-
-	/*@Override
-	public void onTeamListChanged() {
-		
-		Log.d(TAG, "onTeamListChanged");
-		if(pager.getCurrentItem() == 0){
-
-			//FragmentPagerAdapter f = (FragmentPagerAdapter)pager.getAdapter();
-			//BasketballVSFragment bf = (BasketballVSFragment)f.instantiateItem(pager,0);
-			//((onTeamListLoaded)bf).loadTeamList();
-			
-			
-		}
-	}*/
 
 }

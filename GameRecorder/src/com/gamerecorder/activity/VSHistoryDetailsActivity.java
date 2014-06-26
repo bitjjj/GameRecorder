@@ -1,7 +1,6 @@
 package com.gamerecorder.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +14,9 @@ import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.TextView;
 
 import com.fortysevendeg.swipelistview.SwipeListView;
-import com.gamerecorder.model.Game;
-import com.gamerecorder.task.LoadVSHistoryDataAsyncTask;
-import com.gamerecorder.task.LoadVSHistoryDataAsyncTask.LoadVSHistoryDataCallback;
 import com.gamerecorder.util.Constants;
 
-public class VSHistoryDetailsActivity extends LeftSwipeBaseActivity implements LoadVSHistoryDataCallback{
+public class VSHistoryDetailsActivity extends LeftSwipeBaseActivity{
 
 	private List<Map<String, Object>> vsDetailsList;
 	private SwipeListView vsDetailsSwipeListView;
@@ -51,7 +47,7 @@ public class VSHistoryDetailsActivity extends LeftSwipeBaseActivity implements L
 		
 		gameId = getIntent().getStringExtra(Constants.GAME_ID);
 		
-		new LoadVSHistoryDataAsyncTask(this,this).execute();
+		//new LoadVSHistoryDataAsyncTask(this,this).execute();
 	}
 	
 	private void setActionBar() {
@@ -95,12 +91,12 @@ public class VSHistoryDetailsActivity extends LeftSwipeBaseActivity implements L
 		}
 	};
 	
-	@Override
+	/*@Override
 	public void success(Object result) {
 		List<Object> history = (List<Object>)result;
 		
 		for(Object record:history){
-			Game gm = (Game)record;
+			GameOld gm = (GameOld)record;
 			
 			if(gm.getId().equals(gameId)){
 				
@@ -113,6 +109,6 @@ public class VSHistoryDetailsActivity extends LeftSwipeBaseActivity implements L
 				vsDetailsListAdapter.notifyDataSetChanged();
 			}
 		}
-	}
+	}*/
 
 }

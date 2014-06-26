@@ -127,12 +127,6 @@ public class MainActivity extends FragmentActivity {
 			// if (resultCode == RESULT_OK) {
 
 			// }
-
-			/*Fragment f = getSupportFragmentManager().findFragmentByTag(
-					fragmentTags[getActionBar().getSelectedNavigationIndex()]);
-			if(f instanceof onSettingsSaved){
-				((onSettingsSaved) f).onTeamListChanged();
-			}*/
 			EventBus.getDefault().post(new TeamListChangeEvent());
 		}
 

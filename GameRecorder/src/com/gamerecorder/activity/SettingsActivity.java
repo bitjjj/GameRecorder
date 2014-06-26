@@ -20,6 +20,9 @@ import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.Spinner;
 import android.widget.TextView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.gamerecorder.db.dao.GameTeamDao;
@@ -32,17 +35,23 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 
 	private final String TAG = "SettingsActivity";
 
-	private Spinner teamListSpinner;
+	@InjectView(R.id.team_list)
+	Spinner teamListSpinner;
 	private List<String> teamList;
 	private ArrayAdapter<String> teamListAdapter;
 	private int teamListPosition = -1;
-	private ImageButton addTeamButton;
-	private ImageButton deleteTeamButton;
+	@InjectView(R.id.add_team)
+	ImageButton addTeamButton;
+	@InjectView(R.id.delete_team)
+	ImageButton deleteTeamButton;
 
-	private EditText teammemberNameEdit;
-	private ImageButton addTeammemeberButton;
+	@InjectView(R.id.teammember_name)
+	EditText teammemberNameEdit;
+	@InjectView(R.id.add_teammember)
+	ImageButton addTeammemeberButton;
 	private List<Map<String, Object>> teammemberList;
-	private SwipeListView teammemberSwipeListView;
+	@InjectView(R.id.teammembers_list)
+	SwipeListView teammemberSwipeListView;
 	private SimpleAdapter teammemberListAdapter;
 
 	private GameTeamDao gameTeamDao;
@@ -54,12 +63,13 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
+		ButterKnife.inject(this);
 
 		setActionBar();
 
 		handleTeamViewSection(savedInstanceState);
 		handleTeammemberViewSection(savedInstanceState);
-		
+
 		gameTeamDao = new GameTeamDao(this);
 		gameTeammemberDao = new GameTeammemberDao(this);
 
@@ -93,8 +103,7 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 		teamListAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, teamList);
 		teamListAdapter.setDropDownViewResource(R.layout.dropdown_item);
-		
-		teamListSpinner = (Spinner) findViewById(R.id.team_list);
+
 		teamListSpinner.setAdapter(teamListAdapter);
 		teamListSpinner
 				.setOnItemSelectedListener(teamListSpinnerItemSelectedListener);
@@ -102,23 +111,14 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 			teamListSpinner.setSelection(teamListPosition);
 		}
 
-		addTeamButton = (ImageButton) findViewById(R.id.add_team);
-		addTeamButton.setOnClickListener(addTeamButtonClickListener);
-
-		deleteTeamButton = (ImageButton) findViewById(R.id.delete_team);
-		deleteTeamButton.setOnClickListener(deleteTeamButtonClickListener);
 	}
 
 	private void handleTeammemberViewSection(Bundle savedInstanceState) {
 
-		teammemberNameEdit = (EditText) findViewById(R.id.teammember_name);
-
-		addTeammemeberButton = (ImageButton) findViewById(R.id.add_teammember);
-		addTeammemeberButton.setOnClickListener(addTeammemberButtonClickListener);
-
 		if (savedInstanceState != null
 				&& savedInstanceState.containsKey("teammemberList")) {
-			teammemberList = (List) savedInstanceState.getParcelableArrayList("teammemberList");
+			teammemberList = (List) savedInstanceState
+					.getParcelableArrayList("teammemberList");
 		} else {
 			teammemberList = new ArrayList<Map<String, Object>>();
 		}
@@ -128,7 +128,6 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 						"remove" }, new int[] { R.id.text, R.id.remove });
 		teammemberListAdapter.setViewBinder(teammemberListAdapterBinder);
 
-		teammemberSwipeListView = (SwipeListView) findViewById(R.id.teammembers_list);
 		teammemberSwipeListView.setAdapter(teammemberListAdapter);
 		teammemberSwipeListView
 				.setEmptyView(findViewById(R.id.teammembers_list_empty));
@@ -154,7 +153,8 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 						teammemberListAdapter.notifyDataSetChanged();
 						teammemberSwipeListView.closeOpenedItems();
 
-						GameTeammember member = gameTeammemberDao.queryById(Integer.valueOf(data.toString()));
+						GameTeammember member = gameTeammemberDao
+								.queryById(Integer.valueOf(data.toString()));
 						member.setSpecialMark(Constants.DELETE_MARK);
 						gameTeammemberDao.update(member);
 					}
@@ -170,27 +170,29 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 
 	private Spinner.OnItemSelectedListener teamListSpinnerItemSelectedListener = new Spinner.OnItemSelectedListener() {
 
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int pos,long arg3) {
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int pos,
+				long arg3) {
 
 			teamListPosition = pos;
-			
+
 			teammemberList.clear();
-			
+
 			String teamName = teamListAdapter.getItem(teamListPosition);
-			GameTeam team= gameTeamDao.queryByName(teamName);
-			GameTeammember[] members = team.getMembers().toArray(new GameTeammember[0]);
-		
-			for(GameTeammember member:members){
-				if(member.getSpecialMark() != Constants.DELETE_MARK){
+			GameTeam team = gameTeamDao.queryByName(teamName);
+			GameTeammember[] members = team.getMembers().toArray(
+					new GameTeammember[0]);
+
+			for (GameTeammember member : members) {
+				if (member.getSpecialMark() != Constants.DELETE_MARK) {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("text", member.getName());
 					map.put("remove", member.getId());
 					teammemberList.add(map);
 				}
 			}
-				
+
 			currentTeamId = team.getId();
-			
+
 			teammemberListAdapter.notifyDataSetChanged();
 		}
 
@@ -199,82 +201,73 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 		}
 	};
 
-	private OnClickListener addTeamButtonClickListener = new OnClickListener() {
+	@OnClick(R.id.add_team)
+	public void addTeamButton(View v) {
 
-		@Override
-		public void onClick(View v) {
+		final EditText et = new EditText(SettingsActivity.this);
+		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String value = et.getText().toString();
+				if (!"".equals(value)) {
+					teamListAdapter.add(value);
+					teamListAdapter.notifyDataSetChanged();
 
-			final EditText et = new EditText(SettingsActivity.this);
+					GameTeam newTeam = new GameTeam(value);
+					gameTeamDao.create(newTeam);
+
+				}
+
+			}
+		};
+		AlertDialog dlg = SettingsActivity.this.getAlertDlg(et, listener, null);
+		dlg.show();
+
+	}
+
+	@OnClick(R.id.delete_team)
+	public void deleteTeamButton(View v) {
+		if (teamListPosition != -1) {
+			final TextView tv = new TextView(SettingsActivity.this);
+			tv.setText(getResources().getString(R.string.delete_team_tip));
+
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
-					String value = et.getText().toString();
-					if (!"".equals(value)) {
-						teamListAdapter.add(value);
-						teamListAdapter.notifyDataSetChanged();
+					String item = teamListAdapter.getItem(teamListPosition);
+					teamListAdapter.remove(item);
+					teamListAdapter.notifyDataSetChanged();
 
-						GameTeam newTeam = new GameTeam(value);
-						gameTeamDao.create(newTeam);
-						
-					}
+					GameTeam team = new GameTeam(currentTeamId, item,
+							Constants.DELETE_MARK);
+					gameTeamDao.update(team);
 
 				}
 			};
-			AlertDialog dlg = SettingsActivity.this.getAlertDlg(et, listener,
+			AlertDialog dlg = SettingsActivity.this.getAlertDlg(tv, listener,
 					null);
 			dlg.show();
-
 		}
-	};
+	}
 
-	private OnClickListener deleteTeamButtonClickListener = new OnClickListener() {
+	@OnClick(R.id.add_teammember)
+	public void addTeammemberButton(View v) {
+		String teammemberName = teammemberNameEdit.getText().toString();
+		if (!"".equals(teammemberName) && teamListPosition != -1) {
 
-		@Override
-		public void onClick(View v) {
-			if (teamListPosition != -1) {
-				final TextView tv = new TextView(SettingsActivity.this);
-				tv.setText(getResources().getString(R.string.delete_team_tip));
+			GameTeam team = new GameTeam();
+			team.setId(currentTeamId);
 
-				DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						String item = teamListAdapter.getItem(teamListPosition);
-						teamListAdapter.remove(item);
-						teamListAdapter.notifyDataSetChanged();
-						
-						GameTeam team = new GameTeam(currentTeamId,item,Constants.DELETE_MARK);
-						gameTeamDao.update(team);
-						
-					}
-				};
-				AlertDialog dlg = SettingsActivity.this.getAlertDlg(tv,
-						listener, null);
-				dlg.show();
-			}
+			GameTeammember member = new GameTeammember(teammemberName, team);
+			gameTeammemberDao.create(member);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("text", teammemberName);
+			map.put("remove", member.getId());
+			teammemberList.add(map);
+			teammemberListAdapter.notifyDataSetChanged();
+
+			teammemberNameEdit.setText("");
 		}
-	};
-
-	private OnClickListener addTeammemberButtonClickListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			String teammemberName = teammemberNameEdit.getText().toString();
-			if (!"".equals(teammemberName) && teamListPosition != -1) {
-
-				GameTeam team = new GameTeam();
-				team.setId(currentTeamId);
-				
-				GameTeammember member = new GameTeammember(teammemberName, team);
-				gameTeammemberDao.create(member);
-				
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("text", teammemberName);
-				map.put("remove", member.getId());
-				teammemberList.add(map);
-				teammemberListAdapter.notifyDataSetChanged();
-
-				teammemberNameEdit.setText("");
-			}
-		}
-	};
+	}
 
 	private AlertDialog getAlertDlg(final View view,
 			DialogInterface.OnClickListener positiveListener,
@@ -314,17 +307,17 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 	protected void onPause() {
 		super.onPause();
 	}
-	
-	private void loadTeamList(){
+
+	private void loadTeamList() {
 
 		teamListAdapter.clear();
 
 		List<GameTeam> teams = gameTeamDao.queryByMark(Constants.DELETE_MARK);
-		for(GameTeam team:teams){
+		for (GameTeam team : teams) {
 			teamListAdapter.add(team.getName());
 		}
-		
+
 		teamListAdapter.notifyDataSetChanged();
 	}
-	
+
 }

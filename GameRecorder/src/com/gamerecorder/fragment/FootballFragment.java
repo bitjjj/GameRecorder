@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gamerecorder.activity.R;
-import com.gamerecorder.interfaces.onSettingsSaved;
 
-public class FootballFragment extends Fragment implements onSettingsSaved{
+public class FootballFragment extends Fragment{
 	
 	@Override
 	public View onCreateView( LayoutInflater inflater, 
@@ -18,8 +17,5 @@ public class FootballFragment extends Fragment implements onSettingsSaved{
 		return inflater.inflate( R.layout.fragment_football, container, false );
 	}
 
-	@Override
-	public void onTeamListChanged() {
-	}
 
 }
