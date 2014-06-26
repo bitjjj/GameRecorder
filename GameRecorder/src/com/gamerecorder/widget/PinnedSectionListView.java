@@ -302,6 +302,7 @@ public class PinnedSectionListView extends ListView {
 
 		// try slow way by looking through to the next section item above
 		for (int position=fromPosition; position>=0; position--) {
+			if(position >= adapter.getCount())break;//fix by bitjjj
 			int viewType = adapter.getItemViewType(position);
 			if (isItemViewTypePinned(adapter, viewType)) return position;
 		}

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +20,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +32,12 @@ import android.widget.TextView;
 
 import com.gamerecorder.activity.R;
 import com.gamerecorder.activity.VSHistoryDetailsActivity;
+import com.gamerecorder.db.dao.GameResultDao;
+import com.gamerecorder.db.model.GameResult;
 import com.gamerecorder.events.TeamVSHistoryChangeEvent;
 import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
-import com.gamerecorder.model.Game;
 import com.gamerecorder.util.Constants;
-import com.gamerecorder.util.FileUtil;
 import com.gamerecorder.widget.ListViewActionMode;
 import com.gamerecorder.widget.PinnedSectionListView;
 import com.gamerecorder.widget.PinnedSectionListView.PinnedSectionListAdapter;
@@ -50,6 +50,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 	private PinnedSectionListView listView;
 	private SectionListSimpleAdapter adapter;
 	private List<Item> items;
+	private GameResultDao resultDao;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
 			Locale.getDefault());
@@ -99,7 +100,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 	}
 
 	public void onEvent(TeamVSHistoryChangeEvent event) {
-		new LoadHistoryFileAsyncTask(getActivity(),event.getTeams()).execute();
+		new LoadGameResultAsyncTask(getActivity(),event.getTeams()).execute();
 	}
 
 	private class SectionListSimpleAdapter extends ArrayAdapter<Item> implements
@@ -224,13 +225,13 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 
 	}
 	
-	private class LoadHistoryFileAsyncTask extends AsyncTask<Void, Void, List<Object>>{
+	private class LoadGameResultAsyncTask extends AsyncTask<Void, Void, Void>{
 
 		private Context ctx = null;
 		private ProgressDialog proDialog;
 		private String [] teams;
 		
-		private LoadHistoryFileAsyncTask(Context ctx,String[] teams){
+		private LoadGameResultAsyncTask(Context ctx,String[] teams){
 			this.ctx = ctx;
 			this.teams = teams;
 		}
@@ -243,48 +244,41 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 
 		
 		@Override
-		protected List<Object> doInBackground(Void... params) {
-			return FileUtil.getGameHistoryFile(this.ctx);
-		}
-		
-		@Override
-		protected void onPostExecute(List<Object> history) {
-			
+		protected Void doInBackground(Void... params) {
+			List<GameResult> results = resultDao.queryByGameKind(ctx.getResources().getString(R.string.basketball_name_en));
+	
 			Set<String> startDateSet = new HashSet<String>();
 
-			Iterator<Object> iter = history.iterator();
+			Iterator<GameResult> iter = results.iterator();
 			while(iter.hasNext()){
-				Game gm = (Game)iter.next();
-				if(!gm.isGamingTeams(this.teams)){
+				GameResult result = iter.next();
+				if(!result.isGamingTeams(this.teams) || result.getEndDate() == null){
 					iter.remove();
 				}
 			}
 			
-			Collections.sort(history, new Comparator<Object>() {
+			Collections.sort(results, new Comparator<GameResult>() {
 
 				@Override
-				public int compare(Object item1, Object item2) {
-					Game gm1 = (Game)item1;
-					Game gm2 = (Game)item2;
+				public int compare(GameResult item1, GameResult item2) {
 					
-					return gm1.getStartDate().compareTo(gm2.getStartDate());
+					return item1.getStartDate().compareTo(item2.getStartDate());
 				}
 			});
-			                      
+			
 			items.clear();
-			for(Object record:history){
-				Game gm = (Game)record;
+			for(GameResult result:results){
 				Item item;
-				String startDate = sdf.format(gm.getStartDate()).split(" ")[0];
+				String startDate = sdf.format(result.getStartDate()).split(" ")[0];
 				
 				if(!startDateSet.contains(startDate)){
-					item = new Item(Item.SECTION,gm.getStartDate());
+					item = new Item(Item.SECTION,result.getStartDate());
 					items.add(item);
 
 					startDateSet.add(startDate);
 				}
 				
-				item = new Item(Item.ITEM,99999999, gm.getHistoryRecordDesc(), gm.getStartDate(), gm.getEndDate());
+				item = new Item(Item.ITEM,result.getId(), result.getHistoryRecordDesc(), result.getStartDate(), result.getEndDate());
 				items.add(item);
 
 			}
@@ -292,16 +286,28 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 			//remove the same team record
 			if(new HashSet<String>(Arrays.asList(teams)).size() == 1)items.clear();
 			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void param) {
+
 			adapter.notifyDataSetChanged();
-			
 			proDialog.dismiss();
 		}
 		
 	}
 
 	@Override
-	public void deleteSelectedItems(List<Identity> selectedIndexes) {
-		
+	public void deleteSelectedItems(List<Identity> selectedItems) {
+		resultDao.delById(selectedItems);
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		resultDao = new GameResultDao(activity);
 	}
 	
 	@Override  

@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = GameResultStatistic.TABLE_NAME)
 public class GameResultStatistic implements Identity{
 
-	public static final String TABLE_NAME = "game_result_detail";
+	public static final String TABLE_NAME = "game_result_statistic";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_MARK = "special_mark";
 	public static final String COLUMN_DESC = "desc";
@@ -23,7 +23,7 @@ public class GameResultStatistic implements Identity{
 	@DatabaseField(columnName = COLUMN_MARK)
 	private int specialMark;
 	
-	@DatabaseField(foreign = true, canBeNull = false)
+	@DatabaseField(foreign = true, canBeNull = false,columnDefinition = "integer references " + GameResult.TABLE_NAME + "(" + GameResult.COLUMN_ID + ") on delete cascade")
 	private GameResult result;
 	
 	@DatabaseField(foreign = true, canBeNull = false)

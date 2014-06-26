@@ -26,10 +26,10 @@ public class GameResult implements Identity{
 	@DatabaseField(columnName = COLUMN_KIND)
 	private String gameKind;
 	
-	@DatabaseField(foreign = true, canBeNull = false)
+	@DatabaseField(foreign = true, canBeNull = false,foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 1)
 	private GameTeam teamLeft;
 
-	@DatabaseField(foreign = true, canBeNull = false)
+	@DatabaseField(foreign = true, canBeNull = false,foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 1)
 	private GameTeam teamRight;
 	
 	@DatabaseField(columnName = COLUMN_START)
@@ -143,6 +143,16 @@ public class GameResult implements Identity{
 
 		return result.toString();
 		
+	}
+	
+	public boolean isGamingTeams(String[] teamNames){
+		boolean isSame = true;
+		for(String team:teamNames){
+			if(!teamLeft.getName().contains(team) && !teamRight.getName().contains(team)){
+				isSame = false;
+			}
+		}
+		return isSame;
 	}
 	
 }

@@ -270,9 +270,9 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 	};
 	
 	public String[] getGameTeams(){
-		String[] teams = new String[2];
-		teams[0] = team1Spinner.getSelectedItem().toString();
-		teams[1] = team2Spinner.getSelectedItem().toString();
+		String[] teams = {"",""};
+		teams[0] = team1ListAdapter.getCount() > 0 ? team1Spinner.getSelectedItem().toString() : "";
+		teams[1] = team2ListAdapter.getCount() > 0 ? team2Spinner.getSelectedItem().toString() : "";
 		return teams;
 	}
 
