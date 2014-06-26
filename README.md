@@ -23,4 +23,6 @@ ORMLite，数据库操作
 
 EventBus，Activity与深层次的Fragment通信
 
+Butterknife,视图注入
+
 
