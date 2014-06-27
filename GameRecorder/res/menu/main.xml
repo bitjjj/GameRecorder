@@ -5,6 +5,6 @@
         android:icon="@drawable/ic_action_settings"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/action_settings"/>
+        android:title="@string/settings_label"/>
 
 </menu>

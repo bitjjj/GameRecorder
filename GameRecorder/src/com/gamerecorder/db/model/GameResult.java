@@ -139,7 +139,7 @@ public class GameResult implements Identity{
 		
 		result.append(teamLeft.getName() + "    " + scoreLeft);
 		result.append(" VS ");
-		result.append(teamRight.getName() + "    " + scoreRight);	
+		result.append(scoreRight + "    " + teamRight.getName());	
 
 		return result.toString();
 		

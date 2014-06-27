@@ -2,20 +2,27 @@
 <resources>
 
     <string name="app_name">比赛记录器</string>
-    <string name="action_settings">设置</string>
+    <string name="settings_label">设置</string>
+    <string name="ok_label">确定</string>
+    <string name="cancel_label">取消</string>
+    
     <string name="set_teammebers">设置队伍成员</string>
+    
     <string name="football_name">足球</string>
     <string name="basketball_name">篮球</string>
+    <string name="tabletennis_name">乒乓球</string>
+    <string name="badminton_name">羽毛球</string>
     <string name="football_name_en">football</string>
     <string name="basketball_name_en">basketball</string>
+     <string name="tabletennis_name_en">tabletennis</string>
+     <string name="badminton_name_en">badminton</string>
+     
     <string name="team_tip">请选择球队</string>
     <string name="teammember_tip">请输入球员</string>
     <string name="team_empty_tip">没有球队</string>
     <string name="team_vs_empty_tip">没有交战历史</string>
     <string name="teammember_empty_tip">球队没有队员</string>
     <string name="input_team_name_tip">请输入球队名称</string>
-    <string name="input_team_name_ok">确定</string>
-    <string name="input_team_name_cancel">取消</string>
     <string name="delete_team_tip">您确定删除此球队吗？</string>
     <string name="vs_tip">VS</string>
     <string name="vs_label">交战双方</string>
@@ -23,11 +30,13 @@
     <string name="vs_history_details_label">交战详细数据</string>
     <string name="vs_history_details_empty">没有交战详细数据</string>
     <string name="teammember_name_default">球员</string>
+    
     <string name="score_label">分</string>
     <string name="score_label_0">0</string>
     <string name="score_label_1">1分</string>
     <string name="score_label_2">2分</string>
     <string name="score_label_3">3分</string>
+    
     <string name="start_label">开始</string>
     <string name="end_label">结束</string>
     <string name="delete_label">删除</string>
@@ -41,12 +50,15 @@
     <string name="team_name_score_tag">team_name_score</string>
     <string name="team_name_game_type_tag">team_name_game_type</string>
  	<string name="stats_desc">【%1$s】 %2$s : %3$s</string>
+ 	<string name="stats_desc_detail">%1$s : %2$s</string>
+ 	
     <string name="game_statistic_type_pts">得分</string>
     <string name="game_statistic_type_fouls">犯规</string>
     <string name="game_statistic_type_asts">助攻</string>
     <string name="game_statistic_type_rebs">篮板</string>
     <string name="game_statistic_type_stls">抢断</string>
     <string name="game_statistic_type_blks">盖帽</string>
+    
     <string-array name="basketball_scores">
         <item>@string/score_label_1</item>
         <item>@string/score_label_2</item>

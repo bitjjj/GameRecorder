@@ -8,8 +8,6 @@ import java.util.concurrent.Callable;
 import android.content.Context;
 
 import com.gamerecorder.db.model.GameResult;
-import com.gamerecorder.db.model.GameResultStatistic;
-import com.gamerecorder.db.model.GameTeam;
 import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.util.DatabaseHelper;
 import com.j256.ormlite.dao.Dao;
@@ -37,6 +35,16 @@ public class GameResultDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public GameResult queryById(int id){
+		try {
+			return dbHelper.getGameResultDao().queryForId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	public List<GameResult> queryByMark(int mark) {

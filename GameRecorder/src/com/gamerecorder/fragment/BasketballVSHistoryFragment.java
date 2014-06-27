@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,9 +36,10 @@ import com.gamerecorder.events.TeamVSHistoryChangeEvent;
 import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
 import com.gamerecorder.util.Constants;
+import com.gamerecorder.widget.AbstractPinnedSectionListAdapter;
+import com.gamerecorder.widget.AbstractPinnedSectionListAdapter.Item;
 import com.gamerecorder.widget.ListViewActionMode;
 import com.gamerecorder.widget.PinnedSectionListView;
-import com.gamerecorder.widget.PinnedSectionListView.PinnedSectionListAdapter;
 
 import de.greenrobot.event.EventBus;
 
@@ -71,8 +70,9 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 		
 		listView = (PinnedSectionListView) v
 				.findViewById(R.id.team_vs_history_list);
-		items = new ArrayList<BasketballVSHistoryFragment.Item>();
-		adapter = new SectionListSimpleAdapter(getActivity(), items);
+		items = new ArrayList<Item>();
+		//adapter = new SectionListSimpleAdapter(getActivity(), items);
+		adapter = new SectionListSimpleAdapter(getActivity(), R.layout.team_vs_history_list_item, items);
 		
 		listView.setAdapter(adapter);
 		listView.setEmptyView(v.findViewById(R.id.team_vs_history_list_empty));
@@ -87,7 +87,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 					Log.d(TAG, ((LinearLayout)view).getTag().toString());
 					
 					Intent intent = new Intent();
-				    intent.putExtra(Constants.GAME_ID, ((LinearLayout)view).getTag().toString());
+				    intent.putExtra(Constants.GAME_RESULT_ID, Integer.valueOf(((LinearLayout)view).getTag().toString()));
 				    intent.setClass(getActivity(), VSHistoryDetailsActivity.class);
 				    startActivity(intent);
 				}
@@ -102,8 +102,53 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 	public void onEvent(TeamVSHistoryChangeEvent event) {
 		new LoadGameResultAsyncTask(getActivity(),event.getTeams()).execute();
 	}
+	
+	private class SectionListSimpleAdapter extends AbstractPinnedSectionListAdapter{
 
-	private class SectionListSimpleAdapter extends ArrayAdapter<Item> implements
+		public SectionListSimpleAdapter(Context context, int resource,List<Item> items){
+			super(context, resource, items);
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LinearLayout layout = null,dateLayout,dataLayout;
+			
+			Item item = getItem(position);
+			if (convertView == null) {
+				layout = (LinearLayout) mInflater.inflate(mResource, null);
+			}
+			else{
+				layout = (LinearLayout)convertView;
+			}
+			
+			dateLayout = (LinearLayout)layout.findViewById(R.id.date_label_container);
+			dataLayout = (LinearLayout)layout.findViewById(R.id.data_label_container);
+			
+			if(item.getViewType() == Item.SECTION){
+				dateLayout.setVisibility(View.VISIBLE);
+				dataLayout.setVisibility(View.GONE);
+				
+				((TextView)dateLayout.findViewById(R.id.start_date)).setText(item.getStartDate());
+			}
+			else{
+				dateLayout.setVisibility(View.GONE);
+				dataLayout.setVisibility(View.VISIBLE);
+				
+				layout.setTag(item.getId());
+				
+				((TextView)dataLayout.findViewById(R.id.start_time)).setText(item.getStartTime());
+				((TextView)dataLayout.findViewById(R.id.end_time)).setText(item.getEndTime());
+				((TextView)dataLayout.findViewById(R.id.data)).setText(item.getDesc());
+			}
+			
+			
+			return layout;
+
+		}
+		
+	}
+
+	/*private class SectionListSimpleAdapter extends ArrayAdapter<Item> implements
 			PinnedSectionListAdapter {
 
 		protected LayoutInflater mInflater;
@@ -223,7 +268,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 			return desc + "(" + start + ")";
 		}
 
-	}
+	}*/
 	
 	private class LoadGameResultAsyncTask extends AsyncTask<Void, Void, Void>{
 
@@ -291,7 +336,7 @@ public class BasketballVSHistoryFragment extends Fragment implements ListViewDel
 		
 		@Override
 		protected void onPostExecute(Void param) {
-
+			
 			adapter.notifyDataSetChanged();
 			proDialog.dismiss();
 		}

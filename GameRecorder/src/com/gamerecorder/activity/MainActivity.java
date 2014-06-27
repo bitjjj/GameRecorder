@@ -19,7 +19,9 @@ import android.widget.SimpleAdapter;
 
 import com.gamerecorder.events.TeamListChangeEvent;
 import com.gamerecorder.fragment.BasketballFragment;
-import com.gamerecorder.fragment.FootballFragment;
+import com.gamerecorder.fragment.BadmintonFragment;
+import com.gamerecorder.fragment.TableTennisFragment;
+import com.gamerecorder.util.Constants;
 
 import de.greenrobot.event.EventBus;
 
@@ -29,11 +31,9 @@ public class MainActivity extends FragmentActivity {
 	private static final String CURRENT_FRAGMENT_TAG = "fragmentPosition";
 
 	private static int WAIT_SETTINGS_CODE = 101;
-	private String[] fragmentTags = { "basketball", "football" };
-	private int[] fragmentTitles = { R.string.basketball_name,
-			R.string.football_name };
-	private String[] fragmentNames = { BasketballFragment.class.getName(),
-			FootballFragment.class.getName() };
+	private String[] fragmentTags = Constants.GAME_NAMES_EN;
+	private int[] fragmentTitles = { R.string.basketball_name,R.string.badminton_name,R.string.tabletennis_name };
+	private String[] fragmentNames = { BasketballFragment.class.getName(),BadmintonFragment.class.getName(),TableTennisFragment.class.getName() };
 	private List<Map<String, Object>> fragmentData;
 
 	@Override

@@ -43,7 +43,7 @@ public class GameResultStatisticAdapter extends ArrayAdapter<GameResultStatistic
 			desc = String.valueOf(score) + getContext().getResources().getString(R.string.score_label);
 		}
 		
-		String text = String.format(getContext().getResources().getString(R.string.stats_desc),item.getTeamName(),item.getTeammemeberName(),desc);
+		String text = String.format(getContext().getResources().getString(R.string.stats_desc),item.getTeammember().getTeam().getName(),item.getTeammemeberName(),desc);
 		textview.setText(text);
 		textview.setTag(item.getId());
 

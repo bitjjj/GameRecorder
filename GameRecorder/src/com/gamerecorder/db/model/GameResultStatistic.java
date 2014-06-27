@@ -3,6 +3,7 @@ package com.gamerecorder.db.model;
 import java.util.Date;
 
 import com.gamerecorder.interfaces.Identity;
+import com.gamerecorder.util.Constants;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -26,9 +27,11 @@ public class GameResultStatistic implements Identity{
 	@DatabaseField(foreign = true, canBeNull = false,columnDefinition = "integer references " + GameResult.TABLE_NAME + "(" + GameResult.COLUMN_ID + ") on delete cascade")
 	private GameResult result;
 	
-	@DatabaseField(foreign = true, canBeNull = false)
+	@DatabaseField(foreign = true, canBeNull = false,foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 2)
 	public GameTeammember teammember;
 	
+	
+
 	public int getId() {
 		return id;
 	}
@@ -67,7 +70,7 @@ public class GameResultStatistic implements Identity{
 			record += "$"+score;
 		}
 		else{
-			record += "$-999999";
+			record += "$" + Constants.NOT_PTS;
 		}
 		record += "$"+type + "$" + new Date().getTime();
 		setDesc(record);
@@ -83,8 +86,8 @@ public class GameResultStatistic implements Identity{
 
 	public GameResultStatistic(){}
 	
-	public String getTeamName(){
-		return teammember.getTeam().getName();
+	public GameTeammember getTeammember() {
+		return teammember;
 	}
 	
 	public String getTeammemeberName(){
@@ -100,7 +103,7 @@ public class GameResultStatistic implements Identity{
 	}
 	
 	public Date getTime(){
-		return new Date(Integer.valueOf(this.desc.split("\\$")[3]));
+		return new Date(Long.valueOf(this.desc.split("\\$")[3]));
 	}
 	
 }

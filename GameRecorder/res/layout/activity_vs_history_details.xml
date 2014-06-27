@@ -4,17 +4,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.fortysevendeg.swipelistview.SwipeListView
-        xmlns:swipe="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/vs_history_detail_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        swipe:swipeBackView="@+id/back"
-        swipe:swipeCloseAllItemsWhenMoveList="true"
-        swipe:swipeFrontView="@+id/front"
-        swipe:swipeMode="left"
-        swipe:swipeOffsetLeft="230dp"
-        swipe:swipeOffsetRight="0dp" />
+	<TextView
+	    android:id="@+id/vs_history_detail_result"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="horizontal" >
+	    
+	    <com.gamerecorder.widget.PinnedSectionListView
+	        android:id="@+id/vs_history_detail_list_left"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:divider="@null"
+	        android:footerDividersEnabled="false"
+	        android:headerDividersEnabled="false" />
+	    
+	    <com.gamerecorder.widget.PinnedSectionListView
+	        android:id="@+id/vs_history_detail_list_right"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:divider="@null"
+	        android:footerDividersEnabled="false"
+	        android:headerDividersEnabled="false" />
+	    
+	</LinearLayout>
+	
 
     <TextView
         android:id="@+id/vs_history_detail_list_empty"

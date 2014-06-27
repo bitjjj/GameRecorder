@@ -277,11 +277,11 @@ public class SettingsActivity extends LeftSwipeBaseActivity {
 						getResources().getString(R.string.input_team_name_tip))
 				.setView(view)
 				.setPositiveButton(
-						getResources().getString(R.string.input_team_name_ok),
+						getResources().getString(R.string.ok_label),
 						positiveListener)
 				.setNegativeButton(
 						getResources().getString(
-								R.string.input_team_name_cancel),
+								R.string.cancel_label),
 						negativeListener).create();
 
 		return dlg;
