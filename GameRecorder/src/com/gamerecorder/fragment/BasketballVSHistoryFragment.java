@@ -30,14 +30,14 @@ import android.widget.TextView;
 
 import com.gamerecorder.activity.R;
 import com.gamerecorder.activity.VSHistoryDetailsActivity;
+import com.gamerecorder.adapter.AbstractPinnedSectionListAdapter;
+import com.gamerecorder.adapter.AbstractPinnedSectionListAdapter.Item;
 import com.gamerecorder.db.dao.GameResultDao;
 import com.gamerecorder.db.model.GameResult;
 import com.gamerecorder.events.TeamVSHistoryChangeEvent;
 import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
 import com.gamerecorder.util.Constants;
-import com.gamerecorder.widget.AbstractPinnedSectionListAdapter;
-import com.gamerecorder.widget.AbstractPinnedSectionListAdapter.Item;
 import com.gamerecorder.widget.ListViewActionMode;
 import com.gamerecorder.widget.PinnedSectionListView;
 

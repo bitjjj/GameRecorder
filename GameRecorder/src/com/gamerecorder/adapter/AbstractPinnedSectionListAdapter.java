@@ -1,4 +1,4 @@
-package com.gamerecorder.widget;
+package com.gamerecorder.adapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.gamerecorder.interfaces.Identity;
+import com.gamerecorder.util.DateUtil;
+import com.gamerecorder.widget.PinnedSectionListView;
 import com.gamerecorder.widget.PinnedSectionListView.PinnedSectionListAdapter;
 
 public abstract class AbstractPinnedSectionListAdapter extends ArrayAdapter<AbstractPinnedSectionListAdapter.Item> implements PinnedSectionListAdapter {
@@ -53,8 +55,6 @@ public abstract class AbstractPinnedSectionListAdapter extends ArrayAdapter<Abst
 		private int viewType,id;
 		private String desc,statType;
 		private Date start, end;
-		private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
-				Locale.getDefault());
 		
 		public int getId() {
 			return id;
@@ -69,15 +69,15 @@ public abstract class AbstractPinnedSectionListAdapter extends ArrayAdapter<Abst
 		}
 		
 		public String getStartTime() {
-			return sdf.format(start).split(" ")[1];
+			return DateUtil.formatDateTime(start).split(" ")[1];
 		}
 
 		public String getEndTime() {
-			return sdf.format(end).split(" ")[1];
+			return DateUtil.formatDateTime(end).split(" ")[1];
 		}
 
 		public String getStartDate() {
-			return sdf.format(start).split(" ")[0];
+			return DateUtil.formatDateTime(start).split(" ")[0];
 		}
 
 		public String getDesc() {

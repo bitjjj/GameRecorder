@@ -31,6 +31,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 import com.gamerecorder.activity.R;
+import com.gamerecorder.adapter.GameResultStatisticAdapter;
 import com.gamerecorder.db.dao.GameResultDao;
 import com.gamerecorder.db.dao.GameResultStatisticDao;
 import com.gamerecorder.db.dao.GameTeamDao;
@@ -44,7 +45,6 @@ import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
 import com.gamerecorder.util.Constants;
 import com.gamerecorder.util.ViewUtils;
-import com.gamerecorder.widget.GameResultStatisticAdapter;
 import com.gamerecorder.widget.ListViewActionMode;
 import com.gamerecorder.widget.TextViewInfo;
 

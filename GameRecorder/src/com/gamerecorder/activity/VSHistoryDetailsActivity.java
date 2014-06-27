@@ -20,6 +20,8 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import com.gamerecorder.adapter.AbstractPinnedSectionListAdapter;
+import com.gamerecorder.adapter.AbstractPinnedSectionListAdapter.Item;
 import com.gamerecorder.db.dao.GameResultDao;
 import com.gamerecorder.db.dao.GameResultStatisticDao;
 import com.gamerecorder.db.model.GameResult;
@@ -27,8 +29,7 @@ import com.gamerecorder.db.model.GameResultStatistic;
 import com.gamerecorder.interfaces.Identity;
 import com.gamerecorder.interfaces.ListViewDelSelectedItemCallback;
 import com.gamerecorder.util.Constants;
-import com.gamerecorder.widget.AbstractPinnedSectionListAdapter;
-import com.gamerecorder.widget.AbstractPinnedSectionListAdapter.Item;
+import com.gamerecorder.util.DateUtil;
 import com.gamerecorder.widget.ListViewActionMode;
 import com.gamerecorder.widget.PinnedSectionListView;
 
@@ -38,6 +39,7 @@ public class VSHistoryDetailsActivity extends LeftSwipeBaseActivity implements L
 	@InjectView( R.id.vs_history_detail_list_left) PinnedSectionListView listViewLeft;
 	@InjectView( R.id.vs_history_detail_list_right) PinnedSectionListView listViewRight;
 	@InjectView(R.id.vs_history_detail_result) TextView resultTextView;
+	@InjectView(R.id.vs_history_detail_date) TextView dateTextView;
 	
 	private int gameResultId;
 	private GameResultDao resultDao;
@@ -144,7 +146,7 @@ public class VSHistoryDetailsActivity extends LeftSwipeBaseActivity implements L
 		
 		@Override
 		protected void onPostExecute(ResultObject resultObject) {
-			
+			dateTextView.setText(DateUtil.formatDate(resultObject.result.getStartDate()));
 			resultTextView.setText(resultObject.result.getHistoryRecordDesc());
 			
 			addStats(itemsLeft,resultObject.statTypeLeftMap,adapterLeft);

@@ -1,4 +1,4 @@
-package com.gamerecorder.widget;
+package com.gamerecorder.adapter;
 
 import java.util.List;
 
