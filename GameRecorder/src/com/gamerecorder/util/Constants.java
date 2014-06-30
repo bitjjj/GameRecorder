@@ -13,4 +13,8 @@ public class Constants {
 	public final static int NOT_PTS = -999999;
 	
 	public final static String[] GAME_NAMES_EN = {"basketball", "badminton","tabletennis" };
+	
+	public final static String SCREEN_SNAP_FILE_NAME = "gamerecoder.png";
+	
+	public final static String GITHUB_LINK = "https://github.com/bitjjj/GameRecorder";
 }

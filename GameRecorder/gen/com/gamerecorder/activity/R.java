@@ -283,7 +283,6 @@ containing a value of this type.
         public static final int tabs_pattern_diagonal=0x7f02000e;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0043;
         public static final int add_team=0x7f0a000a;
         public static final int add_teammember=0x7f0a000d;
         public static final int all=0x7f0a0003;
@@ -301,6 +300,8 @@ containing a value of this type.
         public static final int game_start=0x7f0a001e;
         public static final int left=0x7f0a0000;
         public static final int menu_delete=0x7f0a0042;
+        public static final int menu_item_settings=0x7f0a0044;
+        public static final int menu_item_share=0x7f0a0043;
         public static final int none=0x7f0a0004;
         public static final int pager=0x7f0a0019;
         public static final int remove=0x7f0a0039;
@@ -372,60 +373,61 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int cab_team_score_history_menu=0x7f0b0000;
-        public static final int main=0x7f0b0001;
+        public static final int main_menu=0x7f0b0001;
     }
     public static final class string {
         public static final int app_name=0x7f070000;
-        public static final int badminton_name=0x7f070008;
-        public static final int badminton_name_en=0x7f07000c;
-        public static final int basketball_name=0x7f070006;
-        public static final int basketball_name_en=0x7f07000a;
+        public static final int badminton_name=0x7f070009;
+        public static final int badminton_name_en=0x7f07000d;
+        public static final int basketball_name=0x7f070007;
+        public static final int basketball_name_en=0x7f07000b;
         public static final int cancel_label=0x7f070003;
-        public static final int delete_label=0x7f070021;
-        public static final int delete_team_tip=0x7f070013;
-        public static final int end_label=0x7f070020;
-        public static final int football_name=0x7f070005;
-        public static final int football_name_en=0x7f070009;
-        public static final int game_statistic_type_asts=0x7f07002f;
-        public static final int game_statistic_type_blks=0x7f070032;
-        public static final int game_statistic_type_fouls=0x7f07002e;
-        public static final int game_statistic_type_pts=0x7f07002d;
-        public static final int game_statistic_type_rebs=0x7f070030;
-        public static final int game_statistic_type_stls=0x7f070031;
-        public static final int input_team_name_tip=0x7f070012;
+        public static final int delete_label=0x7f070022;
+        public static final int delete_team_tip=0x7f070014;
+        public static final int end_label=0x7f070021;
+        public static final int football_name=0x7f070006;
+        public static final int football_name_en=0x7f07000a;
+        public static final int game_statistic_type_asts=0x7f070030;
+        public static final int game_statistic_type_blks=0x7f070033;
+        public static final int game_statistic_type_fouls=0x7f07002f;
+        public static final int game_statistic_type_pts=0x7f07002e;
+        public static final int game_statistic_type_rebs=0x7f070031;
+        public static final int game_statistic_type_stls=0x7f070032;
+        public static final int input_team_name_tip=0x7f070013;
         public static final int ok_label=0x7f070002;
-        public static final int replace_teammember_title=0x7f070028;
-        public static final int score_label=0x7f07001a;
-        public static final int score_label_0=0x7f07001b;
-        public static final int score_label_1=0x7f07001c;
-        public static final int score_label_2=0x7f07001d;
-        public static final int score_label_3=0x7f07001e;
-        public static final int selected_items_tip=0x7f070022;
-        public static final int set_teammebers=0x7f070004;
+        public static final int replace_teammember_title=0x7f070029;
+        public static final int score_label=0x7f07001b;
+        public static final int score_label_0=0x7f07001c;
+        public static final int score_label_1=0x7f07001d;
+        public static final int score_label_2=0x7f07001e;
+        public static final int score_label_3=0x7f07001f;
+        public static final int selected_items_tip=0x7f070023;
+        public static final int set_teammebers=0x7f070005;
         public static final int settings_label=0x7f070001;
-        public static final int start_game_tip=0x7f070024;
-        public static final int start_label=0x7f07001f;
-        public static final int stats_desc=0x7f07002b;
-        public static final int stats_desc_detail=0x7f07002c;
-        public static final int tabletennis_name=0x7f070007;
-        public static final int tabletennis_name_en=0x7f07000b;
-        public static final int team_empty_tip=0x7f07000f;
-        public static final int team_name_game_type_tag=0x7f07002a;
-        public static final int team_name_score_tag=0x7f070029;
-        public static final int team_same_tip=0x7f070023;
-        public static final int team_tip=0x7f07000d;
-        public static final int team_vs_empty_tip=0x7f070010;
-        public static final int teammember_empty_tip=0x7f070011;
-        public static final int teammember_name_default=0x7f070019;
-        public static final int teammember_tip=0x7f07000e;
-        public static final int time_range_tip=0x7f070025;
-        public static final int vs_history_details_empty=0x7f070018;
-        public static final int vs_history_details_label=0x7f070017;
-        public static final int vs_history_label=0x7f070016;
-        public static final int vs_history_loading_message=0x7f070027;
-        public static final int vs_history_loading_title=0x7f070026;
-        public static final int vs_label=0x7f070015;
-        public static final int vs_tip=0x7f070014;
+        public static final int share_label=0x7f070004;
+        public static final int start_game_tip=0x7f070025;
+        public static final int start_label=0x7f070020;
+        public static final int stats_desc=0x7f07002c;
+        public static final int stats_desc_detail=0x7f07002d;
+        public static final int tabletennis_name=0x7f070008;
+        public static final int tabletennis_name_en=0x7f07000c;
+        public static final int team_empty_tip=0x7f070010;
+        public static final int team_name_game_type_tag=0x7f07002b;
+        public static final int team_name_score_tag=0x7f07002a;
+        public static final int team_same_tip=0x7f070024;
+        public static final int team_tip=0x7f07000e;
+        public static final int team_vs_empty_tip=0x7f070011;
+        public static final int teammember_empty_tip=0x7f070012;
+        public static final int teammember_name_default=0x7f07001a;
+        public static final int teammember_tip=0x7f07000f;
+        public static final int time_range_tip=0x7f070026;
+        public static final int vs_history_details_empty=0x7f070019;
+        public static final int vs_history_details_label=0x7f070018;
+        public static final int vs_history_label=0x7f070017;
+        public static final int vs_history_loading_message=0x7f070028;
+        public static final int vs_history_loading_title=0x7f070027;
+        public static final int vs_label=0x7f070016;
+        public static final int vs_tip=0x7f070015;
     }
     public static final class style {
         /** 

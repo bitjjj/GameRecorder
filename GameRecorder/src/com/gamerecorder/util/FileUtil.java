@@ -102,6 +102,10 @@ public class FileUtil {
 		return result;
 	}
 	
+	public static File getScreenSnapFile(Context ctx){
+		return new File(ctx.getFilesDir(), Constants.SCREEN_SNAP_FILE_NAME);
+	}
+	
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.gamerecorder.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.Map;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,13 +18,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ShareActionProvider;
+import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.widget.SimpleAdapter;
 
 import com.gamerecorder.events.TeamListChangeEvent;
-import com.gamerecorder.fragment.BasketballFragment;
 import com.gamerecorder.fragment.BadmintonFragment;
+import com.gamerecorder.fragment.BasketballFragment;
 import com.gamerecorder.fragment.TableTennisFragment;
 import com.gamerecorder.util.Constants;
+import com.gamerecorder.util.FileUtil;
+import com.gamerecorder.util.ScreenSnapUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -32,8 +39,11 @@ public class MainActivity extends FragmentActivity {
 
 	private static int WAIT_SETTINGS_CODE = 101;
 	private String[] fragmentTags = Constants.GAME_NAMES_EN;
-	private int[] fragmentTitles = { R.string.basketball_name,R.string.badminton_name,R.string.tabletennis_name };
-	private String[] fragmentNames = { BasketballFragment.class.getName(),BadmintonFragment.class.getName(),TableTennisFragment.class.getName() };
+	private int[] fragmentTitles = { R.string.basketball_name,
+			R.string.badminton_name, R.string.tabletennis_name };
+	private String[] fragmentNames = { BasketballFragment.class.getName(),
+			BadmintonFragment.class.getName(),
+			TableTennisFragment.class.getName() };
 	private List<Map<String, Object>> fragmentData;
 
 	@Override
@@ -102,7 +112,26 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+
+		MenuItem item = menu.findItem(R.id.menu_item_share);
+		ShareActionProvider provider = (ShareActionProvider) item
+				.getActionProvider();
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_label) + "(" + Constants.GITHUB_LINK + ")");
+		provider.setShareIntent(intent);
+
+		// provider.setShareHistoryFileName(null);
+		OnShareTargetSelectedListener listener = new OnShareTargetSelectedListener() {
+			public boolean onShareTargetSelected(ShareActionProvider source,
+					Intent intent) {
+				startActivity(intent);
+				return true;
+			}
+		};
+		provider.setOnShareTargetSelectedListener(listener);
+
 		return true;
 	}
 
@@ -111,9 +140,12 @@ public class MainActivity extends FragmentActivity {
 
 		switch (item.getItemId()) {
 
-		case R.id.action_settings:
+		case R.id.menu_item_settings:
 			Intent settingsActivity = new Intent(this, SettingsActivity.class);
 			startActivityForResult(settingsActivity, WAIT_SETTINGS_CODE);
+
+			ScreenSnapUtil.shoot(this, FileUtil.getScreenSnapFile(this));
+
 			return true;
 		}
 
@@ -133,7 +165,6 @@ public class MainActivity extends FragmentActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putInt(CURRENT_FRAGMENT_TAG, getActionBar()
@@ -141,9 +172,28 @@ public class MainActivity extends FragmentActivity {
 		super.onSaveInstanceState(outState);
 
 	}
-	
-	public String getGameKind(){
+
+	public String getGameKind() {
 		return fragmentTags[getActionBar().getSelectedNavigationIndex()];
+	}
+
+	public static void shareMsg(Context context, String activityTitle,
+			String msgTitle, String msgText, String imgPath) {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		if (imgPath == null || imgPath.equals("")) {
+			intent.setType("text/plain"); // 纯文本
+		} else {
+			File f = new File(imgPath);
+			if (f != null && f.exists() && f.isFile()) {
+				intent.setType("image/png");
+				Uri u = Uri.fromFile(f);
+				intent.putExtra(Intent.EXTRA_STREAM, u);
+			}
+		}
+		intent.putExtra(Intent.EXTRA_SUBJECT, msgTitle);
+		intent.putExtra(Intent.EXTRA_TEXT, msgText);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(Intent.createChooser(intent, activityTitle));
 	}
 
 }
