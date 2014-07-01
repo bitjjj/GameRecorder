@@ -23,9 +23,7 @@ import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.widget.SimpleAdapter;
 
 import com.gamerecorder.events.TeamListChangeEvent;
-import com.gamerecorder.fragment.BadmintonFragment;
 import com.gamerecorder.fragment.BasketballFragment;
-import com.gamerecorder.fragment.TableTennisFragment;
 import com.gamerecorder.util.Constants;
 import com.gamerecorder.util.FileUtil;
 import com.gamerecorder.util.ScreenSnapUtil;
