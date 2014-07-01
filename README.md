@@ -1,4 +1,4 @@
-GameRecorder（未完）
+GameRecorder（目前支持篮球）
 ============
 
 Android：比赛记录器，支持篮球，乒乓球，羽毛球
