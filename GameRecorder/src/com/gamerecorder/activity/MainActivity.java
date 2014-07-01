@@ -39,11 +39,10 @@ public class MainActivity extends FragmentActivity {
 
 	private static int WAIT_SETTINGS_CODE = 101;
 	private String[] fragmentTags = Constants.GAME_NAMES_EN;
-	private int[] fragmentTitles = { R.string.basketball_name,
-			R.string.badminton_name, R.string.tabletennis_name };
-	private String[] fragmentNames = { BasketballFragment.class.getName(),
-			BadmintonFragment.class.getName(),
-			TableTennisFragment.class.getName() };
+	//private int[] fragmentTitles = { R.string.basketball_name,R.string.badminton_name, R.string.tabletennis_name };
+	//private String[] fragmentNames = { BasketballFragment.class.getName(),BadmintonFragment.class.getName(),TableTennisFragment.class.getName() };
+	private int[] fragmentTitles = { R.string.basketball_name};
+	private String[] fragmentNames = { BasketballFragment.class.getName()};
 	private List<Map<String, Object>> fragmentData;
 
 	@Override
@@ -57,7 +56,7 @@ public class MainActivity extends FragmentActivity {
 		ab.setTitle("");
 
 		fragmentData = new ArrayList<Map<String, Object>>();
-		for (int i = 0; i < fragmentTags.length; i++) {
+		for (int i = 0; i < fragmentNames.length; i++) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("title", getResources().getString(fragmentTitles[i]));
 			map.put("tag", fragmentTags[i]);
