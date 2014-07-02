@@ -127,6 +127,7 @@ public class BasketballVSFragment extends Fragment implements ListViewDelSelecte
 		public void gameStartButton(View view) {
 			Button btn = (Button)view;
 			String startLabel = getResources().getString(R.string.start_label);
+			if(team1Spinner.getCount() <= 0 || team2Spinner.getCount() <= 0)return;
 			if(btn.getText().equals(startLabel) 
 					&& team1Spinner.getSelectedItem().toString().equals(team2Spinner.getSelectedItem().toString())){
 				Toast.makeText(getActivity(), R.string.team_same_tip, Toast.LENGTH_SHORT).show();
