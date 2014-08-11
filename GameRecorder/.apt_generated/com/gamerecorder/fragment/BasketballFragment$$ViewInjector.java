@@ -7,14 +7,14 @@ import butterknife.ButterKnife.Finder;
 public class BasketballFragment$$ViewInjector {
   public static void inject(Finder finder, final com.gamerecorder.fragment.BasketballFragment target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131361817, "field 'pager'");
-    target.pager = (android.support.v4.view.ViewPager) view;
     view = finder.findRequiredView(source, 2131361816, "field 'tabs'");
     target.tabs = (com.astuetz.PagerSlidingTabStrip) view;
+    view = finder.findRequiredView(source, 2131361817, "field 'pager'");
+    target.pager = (android.support.v4.view.ViewPager) view;
   }
 
   public static void reset(com.gamerecorder.fragment.BasketballFragment target) {
-    target.pager = null;
     target.tabs = null;
+    target.pager = null;
   }
 }
